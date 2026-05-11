@@ -1,0 +1,71 @@
+aid: zendesk-sell
+name: Zendesk Sell
+description: >-
+  Zendesk Sell (formerly Base CRM) is a sales CRM platform that helps sales
+  teams manage leads, contacts, deals, and pipelines while integrating with the
+  broader Zendesk customer experience suite. The platform offers pipeline
+  analytics, email and call tracking, mobile apps, and territory management for
+  high-velocity sales organizations. The Sell API is a RESTful API authenticated
+  via OAuth 2.0 (authorization code, implicit, password, and refresh token
+  grants) at the api.getbase.com host that provides full CRUD access to leads,
+  contacts, deals, accounts, notes, tasks, calls, and custom fields.
+type: Index
+image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+tags:
+  - CRM
+  - Sales
+  - Sales Automation
+  - Leads
+  - Deals
+  - Pipeline
+  - Customer Experience
+url: >-
+  https://raw.githubusercontent.com/api-evangelist/zendesk-sell/refs/heads/main/apis.yml
+created: '2026-05-11'
+modified: '2026-05-11'
+specificationVersion: '0.19'
+apis:
+  - aid: zendesk-sell:sales-crm-api
+    name: Zendesk Sell (Sales CRM) API
+    description: >-
+      OAuth 2.0-authenticated REST API for managing leads, contacts, deals,
+      accounts, notes, tasks, calls, sources, stages, pipelines, and custom
+      fields in Zendesk Sell. Bearer access tokens are passed in the
+      Authorization header against the api.getbase.com host.
+    humanURL: https://developer.zendesk.com/api-reference/sales-crm/introduction/
+    baseURL: https://api.getbase.com
+    tags:
+      - CRM
+      - Sales
+      - Leads
+      - Contacts
+      - Deals
+      - Pipeline
+    properties:
+      - type: Documentation
+        url: https://developer.zendesk.com/api-reference/sales-crm/introduction/
+      - type: Authentication
+        url: https://developer.zendesk.com/api-reference/sales-crm/authentication/introduction/
+      - type: OAuth Reference
+        url: https://developer.zendesk.com/api-reference/sales-crm/authentication/reference/
+
+common:
+  - type: Website
+    url: https://www.zendesk.com/sell/
+  - type: Documentation
+    url: https://developer.zendesk.com/api-reference/sales-crm/introduction/
+  - type: API Reference
+    url: https://developer.zendesk.com/api-reference/
+  - type: Pricing
+    url: https://www.zendesk.com/sell/pricing/
+  - type: Sign Up
+    url: https://www.zendesk.com/register/
+  - type: Login
+    url: https://www.zendesk.com/login/
+  - type: Support
+    url: https://support.zendesk.com/
+  - type: GitHub Organization
+    url: https://github.com/zendesk
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com
