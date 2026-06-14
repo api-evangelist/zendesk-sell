@@ -1,0 +1,1346 @@
+"""
+Zendesk Sell GraphQL Schema
+Conceptual schema derived from the Zendesk Sell (formerly Base CRM) REST API.
+Source: https://developer.zendesk.com/api-reference/sales-crm/introduction/
+"""
+
+scalar DateTime
+scalar JSON
+
+# -------------------------------------------------------------------
+# Enums
+# -------------------------------------------------------------------
+
+enum ContactType {
+  PERSON
+  COMPANY
+}
+
+enum DealStatus {
+  ONGOING
+  WON
+  LOST
+}
+
+enum LeadStatus {
+  NEW
+  WORKING
+  QUALIFIED
+  UNQUALIFIED
+  CONVERTED
+}
+
+enum TaskStatus {
+  ACTIVE
+  DONE
+}
+
+enum TaskResourceType {
+  LEAD
+  CONTACT
+  DEAL
+}
+
+enum CallDirection {
+  INBOUND
+  OUTBOUND
+}
+
+enum CallOutcome {
+  CONNECTED
+  LEFT_MESSAGE
+  LEFT_LIVE_MESSAGE
+  WRONG_NUMBER
+  NO_ANSWER
+  FAILED
+}
+
+enum AssociationResourceType {
+  LEAD
+  CONTACT
+  DEAL
+  ORDER
+}
+
+enum WebhookEventType {
+  POST
+  PUT
+  PATCH
+  DELETE
+}
+
+enum OwnerType {
+  USER
+  TEAM
+}
+
+enum FilterType {
+  LEAD
+  CONTACT
+  DEAL
+}
+
+enum CustomFieldType {
+  TEXT
+  NUMBER
+  DECIMAL
+  DATE
+  DATETIME
+  CHECKBOX
+  DROPDOWN
+  URL
+  EMAIL
+  PHONE
+}
+
+enum SequenceStatus {
+  ACTIVE
+  PAUSED
+  COMPLETED
+  OPTED_OUT
+}
+
+enum IntegrationStatus {
+  ACTIVE
+  INACTIVE
+  ERROR
+}
+
+# -------------------------------------------------------------------
+# Core CRM Types
+# -------------------------------------------------------------------
+
+"""A person or company that may become a customer."""
+type Contact {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  firstName: String
+  lastName: String
+  name: String
+  contactType: ContactType!
+  title: String
+  description: String
+  industry: String
+  website: String
+  email: String
+  phone: String
+  mobile: String
+  fax: String
+  twitter: String
+  facebook: String
+  linkedin: String
+  skype: String
+  address: Address
+  tags: [Tag!]
+  customFields: [CustomFieldValue!]
+  ownerId: ID
+  owner: User
+  organizationId: ID
+  organization: Organization
+  isOrganization: Boolean!
+  deals: [Deal!]
+  notes: [Note!]
+  tasks: [Task!]
+  calls: [Call!]
+  emails: [Email!]
+}
+
+"""An opportunity to sell to a contact or organization."""
+type Deal {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  name: String!
+  value: Float
+  currency: String
+  hotness: Int
+  status: DealStatus!
+  closeDate: DateTime
+  lostReason: String
+  lostReasonId: ID
+  contactId: ID
+  contact: Contact
+  organizationId: ID
+  organization: Organization
+  stageId: ID!
+  stage: Stage
+  pipelineId: ID!
+  pipeline: Pipeline
+  ownerId: ID
+  owner: User
+  sourceId: ID
+  source: Source
+  tags: [Tag!]
+  customFields: [CustomFieldValue!]
+  notes: [Note!]
+  tasks: [Task!]
+  calls: [Call!]
+  emails: [Email!]
+  lineItems: [LineItem!]
+  products: [Product!]
+}
+
+"""An unqualified sales prospect."""
+type Lead {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  firstName: String
+  lastName: String
+  name: String
+  title: String
+  description: String
+  company: String
+  industry: String
+  website: String
+  email: String
+  phone: String
+  mobile: String
+  fax: String
+  twitter: String
+  facebook: String
+  linkedin: String
+  skype: String
+  address: Address
+  status: LeadStatus!
+  sourceId: ID
+  source: Source
+  ownerId: ID
+  owner: User
+  tags: [Tag!]
+  customFields: [CustomFieldValue!]
+  notes: [Note!]
+  tasks: [Task!]
+  calls: [Call!]
+  emails: [Email!]
+  convertedContact: Contact
+  convertedDeal: Deal
+}
+
+"""A company or account associated with contacts and deals."""
+type Organization {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  name: String!
+  description: String
+  industry: String
+  website: String
+  email: String
+  phone: String
+  fax: String
+  twitter: String
+  facebook: String
+  linkedin: String
+  address: Address
+  numberOfEmployees: Int
+  annualRevenue: Float
+  currency: String
+  tags: [Tag!]
+  customFields: [CustomFieldValue!]
+  ownerId: ID
+  owner: User
+  contacts: [Contact!]
+  deals: [Deal!]
+  notes: [Note!]
+  tasks: [Task!]
+}
+
+# -------------------------------------------------------------------
+# Activity Types
+# -------------------------------------------------------------------
+
+"""A to-do item associated with a CRM resource."""
+type Task {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  content: String!
+  dueDate: DateTime
+  status: TaskStatus!
+  completed: Boolean!
+  completedAt: DateTime
+  remind: Boolean
+  remindAt: DateTime
+  ownerId: ID
+  owner: User
+  resourceType: TaskResourceType
+  resourceId: ID
+}
+
+"""A note attached to a lead, contact, or deal."""
+type Note {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  content: String!
+  resourceType: AssociationResourceType
+  resourceId: ID
+  creatorId: ID
+  creator: User
+}
+
+"""A phone call logged against a CRM resource."""
+type Call {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  duration: Int
+  outcome: CallOutcome
+  direction: CallDirection
+  summary: String
+  phoneNumber: String
+  calledAt: DateTime
+  resourceType: AssociationResourceType
+  resourceId: ID
+  userId: ID
+  user: User
+  recording: CallRecording
+}
+
+"""Recording metadata for a logged call."""
+type CallRecording {
+  id: ID!
+  url: String
+  duration: Int
+  size: Int
+}
+
+"""An email message tracked in the CRM."""
+type Email {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  subject: String
+  body: String
+  fromAddress: String
+  toAddresses: [String!]
+  ccAddresses: [String!]
+  bccAddresses: [String!]
+  sentAt: DateTime
+  receivedAt: DateTime
+  resourceType: AssociationResourceType
+  resourceId: ID
+  userId: ID
+  user: User
+}
+
+"""A text/SMS message logged in the CRM."""
+type Text {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  content: String
+  direction: CallDirection
+  phoneNumber: String
+  sentAt: DateTime
+  resourceType: AssociationResourceType
+  resourceId: ID
+  userId: ID
+  user: User
+}
+
+"""A calendar meeting or appointment linked to a CRM resource."""
+type Meeting {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  title: String
+  description: String
+  location: String
+  startTime: DateTime
+  endTime: DateTime
+  allDay: Boolean
+  resourceType: AssociationResourceType
+  resourceId: ID
+  organizer: User
+  attendees: [User!]
+}
+
+# -------------------------------------------------------------------
+# Pipeline & Stage Types
+# -------------------------------------------------------------------
+
+"""A sales pipeline grouping stages."""
+type Pipeline {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  name: String!
+  description: String
+  disabled: Boolean!
+  stages: [Stage!]
+  deals: [Deal!]
+}
+
+"""A stage within a sales pipeline."""
+type Stage {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  name: String!
+  pipelineId: ID!
+  pipeline: Pipeline
+  position: Int
+  probability: Float
+  rottenDays: Int
+  active: Boolean!
+}
+
+# -------------------------------------------------------------------
+# Product & Order Types
+# -------------------------------------------------------------------
+
+"""A product catalog containing products for sale."""
+type ProductCatalog {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  name: String!
+  description: String
+  currency: String
+  products: [Product!]
+}
+
+"""A product that can be attached to deals."""
+type Product {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  name: String!
+  description: String
+  sku: String
+  price: Float
+  cost: Float
+  currency: String
+  active: Boolean!
+  catalogId: ID
+  catalog: ProductCatalog
+}
+
+"""An order associated with a deal."""
+type Order {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  dealId: ID!
+  deal: Deal
+  currency: String
+  discount: Float
+  discountType: String
+  subtotal: Float
+  grandTotal: Float
+  lineItems: [LineItem!]
+}
+
+"""A line item within an order."""
+type LineItem {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  orderId: ID
+  order: Order
+  productId: ID
+  product: Product
+  name: String
+  description: String
+  price: Float
+  cost: Float
+  quantity: Float
+  discount: Float
+  discountType: String
+  value: Float
+  currency: String
+}
+
+# -------------------------------------------------------------------
+# People & Permissions
+# -------------------------------------------------------------------
+
+"""A Zendesk Sell user account."""
+type User {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  name: String
+  email: String!
+  role: UserRole
+  status: String
+  confirmed: Boolean
+  phoneNumber: String
+  timezone: String
+  locale: String
+  teamId: ID
+  team: Team
+  permissions: [Permission!]
+}
+
+"""A role assigned to a user controlling access level."""
+type UserRole {
+  id: ID!
+  name: String!
+  description: String
+  permissions: [Permission!]
+}
+
+"""A specific permission granted to a user or role."""
+type Permission {
+  id: ID!
+  resource: String!
+  action: String!
+  scope: String
+}
+
+"""A team grouping users for territory or reporting."""
+type Team {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  name: String!
+  description: String
+  members: [User!]
+}
+
+# -------------------------------------------------------------------
+# Customization Types
+# -------------------------------------------------------------------
+
+"""A custom field definition for a CRM resource."""
+type CustomField {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  name: String!
+  resourceType: String!
+  fieldType: CustomFieldType!
+  required: Boolean!
+  restricted: Boolean!
+  options: [CustomFieldOption!]
+}
+
+"""An option value for dropdown custom fields."""
+type CustomFieldOption {
+  id: ID!
+  value: String!
+  position: Int
+}
+
+"""A custom field value for a specific CRM resource instance."""
+type CustomFieldValue {
+  fieldId: ID!
+  field: CustomField
+  value: JSON
+}
+
+"""A tag label used to categorize CRM resources."""
+type Tag {
+  id: ID!
+  name: String!
+  resourceType: String
+}
+
+"""A label (alias for Tag in some contexts)."""
+type Label {
+  id: ID!
+  name: String!
+  color: String
+  resourceType: String
+}
+
+"""The original source of a lead or deal."""
+type Source {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  name: String!
+  description: String
+  resourceType: String
+}
+
+# -------------------------------------------------------------------
+# Filtering & Search
+# -------------------------------------------------------------------
+
+"""A saved filter for querying CRM resources."""
+type Filter {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  name: String!
+  filterType: FilterType!
+  shared: Boolean!
+  creatorId: ID
+  creator: User
+  conditions: [FilterCondition!]
+}
+
+"""A single condition clause within a saved filter."""
+type FilterCondition {
+  id: ID!
+  attribute: String!
+  operator: String!
+  value: JSON
+}
+
+# -------------------------------------------------------------------
+# Sequences (Cadences)
+# -------------------------------------------------------------------
+
+"""An automated outreach sequence."""
+type Sequence {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  name: String!
+  description: String
+  active: Boolean!
+  steps: [SequenceStep!]
+  subscriptions: [SequenceSubscription!]
+}
+
+"""A step within an outreach sequence."""
+type SequenceStep {
+  id: ID!
+  sequenceId: ID!
+  position: Int!
+  delayDays: Int
+  type: String
+  templateId: ID
+}
+
+"""A contact or lead enrolled in a sequence."""
+type SequenceSubscription {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  sequenceId: ID!
+  sequence: Sequence
+  resourceType: String
+  resourceId: ID
+  status: SequenceStatus!
+  currentStep: Int
+  enrolledBy: User
+}
+
+# -------------------------------------------------------------------
+# Signals & Prospecting
+# -------------------------------------------------------------------
+
+"""A sales signal event surfaced by intelligence features."""
+type Signal {
+  id: ID!
+  createdAt: DateTime!
+  type: String!
+  description: String
+  resourceType: String
+  resourceId: ID
+  data: JSON
+}
+
+"""A signal entry record."""
+type SignalEntry {
+  id: ID!
+  signalId: ID!
+  signal: Signal
+  userId: ID
+  user: User
+  seenAt: DateTime
+}
+
+"""A smart link used for email tracking and engagement."""
+type SmartLink {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  originalUrl: String!
+  shortUrl: String!
+  dealId: ID
+  deal: Deal
+  visits: [ProspectVisit!]
+}
+
+"""A prospect enrichment result."""
+type Enrichment {
+  id: ID!
+  createdAt: DateTime!
+  email: String
+  firstName: String
+  lastName: String
+  title: String
+  company: String
+  industry: String
+  linkedinUrl: String
+  twitterHandle: String
+  phone: String
+  location: String
+  confidence: Float
+}
+
+"""A prospector result from lead prospecting tools."""
+type ProspectorResult {
+  id: ID!
+  createdAt: DateTime!
+  email: String
+  firstName: String
+  lastName: String
+  title: String
+  company: String
+  industry: String
+  website: String
+  phone: String
+  linkedin: String
+  confidence: Float
+  creditUsed: Int
+}
+
+"""Tracks credit consumption for prospecting and enrichment."""
+type CreditUsage {
+  id: ID!
+  createdAt: DateTime!
+  userId: ID
+  user: User
+  type: String
+  creditsUsed: Int
+  resourceId: ID
+  resourceType: String
+}
+
+# -------------------------------------------------------------------
+# Visitor Intelligence (Prospect)
+# -------------------------------------------------------------------
+
+"""A tracked prospect who visited a monitored page."""
+type Prospect {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  email: String
+  name: String
+  company: String
+  ip: String
+  visits: [ProspectVisit!]
+  sources: [ProspectSource!]
+}
+
+"""A single page visit by a tracked prospect."""
+type ProspectVisit {
+  id: ID!
+  createdAt: DateTime!
+  prospectId: ID
+  prospect: Prospect
+  url: String
+  referrer: String
+  duration: Int
+  device: String
+  location: String
+  visitedAt: DateTime
+}
+
+"""A traffic source attribution for a prospect."""
+type ProspectSource {
+  id: ID!
+  prospectId: ID!
+  source: String
+  medium: String
+  campaign: String
+  content: String
+  term: String
+}
+
+"""WHOIS domain intelligence data."""
+type WhoIs {
+  id: ID!
+  domain: String!
+  registrant: String
+  registrantEmail: String
+  createdDate: DateTime
+  expiresDate: DateTime
+  registrar: String
+  nameservers: [String!]
+  rawData: JSON
+}
+
+"""A visit event from visitor intelligence tracking."""
+type VisitEvent {
+  id: ID!
+  createdAt: DateTime!
+  url: String
+  domain: String
+  prospectId: ID
+  prospect: Prospect
+  heatmapId: ID
+  heatmap: HeatMap
+  data: JSON
+}
+
+"""Heat map analytics for a tracked page."""
+type HeatMap {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  url: String!
+  pageTitle: String
+  clicks: Int
+  visits: Int
+  scrollDepth: Float
+  data: JSON
+}
+
+# -------------------------------------------------------------------
+# Webhooks
+# -------------------------------------------------------------------
+
+"""A webhook subscription for real-time event delivery."""
+type Webhook {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  url: String!
+  event: String!
+  resourceType: String
+  active: Boolean!
+  secret: String
+  events: [WebhookEvent!]
+}
+
+"""A webhook event delivery record."""
+type WebhookEvent {
+  id: ID!
+  webhookId: ID!
+  webhook: Webhook
+  eventType: WebhookEventType!
+  payload: JSON
+  deliveredAt: DateTime
+  responseStatus: Int
+  retryCount: Int
+}
+
+# -------------------------------------------------------------------
+# API & Auth
+# -------------------------------------------------------------------
+
+"""An API credential (OAuth application)."""
+type APICredential {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  name: String!
+  clientId: String!
+  redirectUri: String
+  scopes: [String!]
+  status: String
+}
+
+"""An OAuth access/refresh token pair."""
+type OAuthToken {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  accessToken: String!
+  refreshToken: String
+  tokenType: String
+  expiresAt: DateTime
+  scopes: [String!]
+  userId: ID
+  user: User
+}
+
+# -------------------------------------------------------------------
+# Integrations & Sync
+# -------------------------------------------------------------------
+
+"""An external integration connected to Zendesk Sell."""
+type Integration {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  name: String!
+  type: String!
+  status: IntegrationStatus!
+  config: JSON
+  lastSyncedAt: DateTime
+}
+
+"""A sync record tracking data synchronization with an external system."""
+type Sync {
+  id: ID!
+  integrationId: ID!
+  integration: Integration
+  startedAt: DateTime
+  completedAt: DateTime
+  status: String
+  recordsSynced: Int
+  errors: [String!]
+}
+
+"""Email-specific settings for a user or account."""
+type EmailSetting {
+  id: ID!
+  userId: ID
+  trackOpens: Boolean
+  trackClicks: Boolean
+  signature: String
+  smtpHost: String
+  smtpPort: Int
+  imapHost: String
+  imapPort: Int
+  fromAddress: String
+}
+
+"""Call-specific settings for a user or account."""
+type CallSetting {
+  id: ID!
+  userId: ID
+  callerIdNumber: String
+  recordCalls: Boolean
+  transcribeCalls: Boolean
+  forwardToPhone: String
+}
+
+"""Calendar integration settings for a user or account."""
+type CalendarSetting {
+  id: ID!
+  userId: ID
+  provider: String
+  calendarId: String
+  syncEnabled: Boolean
+  twoWaySync: Boolean
+  lastSyncedAt: DateTime
+}
+
+# -------------------------------------------------------------------
+# Associations & Collaboration
+# -------------------------------------------------------------------
+
+"""An association between two CRM resources."""
+type Association {
+  id: ID!
+  createdAt: DateTime!
+  resourceType: AssociationResourceType!
+  resourceId: ID!
+  associatedType: AssociationResourceType!
+  associatedId: ID!
+}
+
+"""A collaboration record linking a user to a CRM resource."""
+type Collaboration {
+  id: ID!
+  createdAt: DateTime!
+  userId: ID!
+  user: User
+  resourceType: String!
+  resourceId: ID!
+}
+
+"""An embedded resource (file, link) attached to a CRM record."""
+type Embed {
+  id: ID!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  url: String!
+  title: String
+  description: String
+  thumbnailUrl: String
+  resourceType: String
+  resourceId: ID
+}
+
+# -------------------------------------------------------------------
+# Supporting Value Objects
+# -------------------------------------------------------------------
+
+"""A postal address."""
+type Address {
+  line1: String
+  line2: String
+  city: String
+  postalCode: String
+  state: String
+  country: String
+}
+
+# -------------------------------------------------------------------
+# Pagination
+# -------------------------------------------------------------------
+
+type PageInfo {
+  hasNextPage: Boolean!
+  hasPreviousPage: Boolean!
+  startCursor: String
+  endCursor: String
+  totalCount: Int
+}
+
+type ContactEdge {
+  cursor: String!
+  node: Contact!
+}
+
+type ContactConnection {
+  edges: [ContactEdge!]!
+  pageInfo: PageInfo!
+}
+
+type DealEdge {
+  cursor: String!
+  node: Deal!
+}
+
+type DealConnection {
+  edges: [DealEdge!]!
+  pageInfo: PageInfo!
+}
+
+type LeadEdge {
+  cursor: String!
+  node: Lead!
+}
+
+type LeadConnection {
+  edges: [LeadEdge!]!
+  pageInfo: PageInfo!
+}
+
+# -------------------------------------------------------------------
+# Root Types
+# -------------------------------------------------------------------
+
+type Query {
+  contact(id: ID!): Contact
+  contacts(first: Int, after: String, last: Int, before: String, ownerId: ID, tags: [String!]): ContactConnection!
+
+  deal(id: ID!): Deal
+  deals(first: Int, after: String, status: DealStatus, stageId: ID, pipelineId: ID, ownerId: ID): DealConnection!
+
+  lead(id: ID!): Lead
+  leads(first: Int, after: String, status: LeadStatus, ownerId: ID): LeadConnection!
+
+  organization(id: ID!): Organization
+  organizations(first: Int, after: String): [Organization!]!
+
+  task(id: ID!): Task
+  tasks(first: Int, after: String, status: TaskStatus, ownerId: ID): [Task!]!
+
+  note(id: ID!): Note
+  notes(resourceType: AssociationResourceType, resourceId: ID): [Note!]!
+
+  call(id: ID!): Call
+  calls(resourceType: AssociationResourceType, resourceId: ID): [Call!]!
+
+  pipeline(id: ID!): Pipeline
+  pipelines: [Pipeline!]!
+
+  stage(id: ID!): Stage
+  stages(pipelineId: ID!): [Stage!]!
+
+  product(id: ID!): Product
+  products(catalogId: ID): [Product!]!
+
+  productCatalog(id: ID!): ProductCatalog
+  productCatalogs: [ProductCatalog!]!
+
+  order(id: ID!): Order
+  orders(dealId: ID!): [Order!]!
+
+  user(id: ID!): User
+  users(teamId: ID): [User!]!
+
+  team(id: ID!): Team
+  teams: [Team!]!
+
+  source(id: ID!): Source
+  sources: [Source!]!
+
+  tag(id: ID!): Tag
+  tags(resourceType: String): [Tag!]!
+
+  customField(id: ID!): CustomField
+  customFields(resourceType: String): [CustomField!]!
+
+  filter(id: ID!): Filter
+  filters(filterType: FilterType): [Filter!]!
+
+  webhook(id: ID!): Webhook
+  webhooks: [Webhook!]!
+
+  sequence(id: ID!): Sequence
+  sequences: [Sequence!]!
+
+  sequenceSubscription(id: ID!): SequenceSubscription
+  sequenceSubscriptions(sequenceId: ID, resourceType: String, resourceId: ID): [SequenceSubscription!]!
+
+  integration(id: ID!): Integration
+  integrations: [Integration!]!
+
+  emailSetting(userId: ID!): EmailSetting
+  callSetting(userId: ID!): CallSetting
+  calendarSetting(userId: ID!): CalendarSetting
+
+  creditUsage(userId: ID): [CreditUsage!]!
+
+  prospects(domain: String): [Prospect!]!
+  prospect(id: ID!): Prospect
+
+  signals(resourceType: String, resourceId: ID): [Signal!]!
+
+  heatMap(id: ID!): HeatMap
+  heatMaps: [HeatMap!]!
+}
+
+type Mutation {
+  createContact(input: CreateContactInput!): Contact!
+  updateContact(id: ID!, input: UpdateContactInput!): Contact!
+  deleteContact(id: ID!): Boolean!
+
+  createDeal(input: CreateDealInput!): Deal!
+  updateDeal(id: ID!, input: UpdateDealInput!): Deal!
+  deleteDeal(id: ID!): Boolean!
+
+  createLead(input: CreateLeadInput!): Lead!
+  updateLead(id: ID!, input: UpdateLeadInput!): Lead!
+  deleteLead(id: ID!): Boolean!
+  convertLead(id: ID!): LeadConversionResult!
+
+  createOrganization(input: CreateOrganizationInput!): Organization!
+  updateOrganization(id: ID!, input: UpdateOrganizationInput!): Organization!
+  deleteOrganization(id: ID!): Boolean!
+
+  createTask(input: CreateTaskInput!): Task!
+  updateTask(id: ID!, input: UpdateTaskInput!): Task!
+  deleteTask(id: ID!): Boolean!
+
+  createNote(input: CreateNoteInput!): Note!
+  updateNote(id: ID!, input: UpdateNoteInput!): Note!
+  deleteNote(id: ID!): Boolean!
+
+  createCall(input: CreateCallInput!): Call!
+  updateCall(id: ID!, input: UpdateCallInput!): Call!
+  deleteCall(id: ID!): Boolean!
+
+  createWebhook(input: CreateWebhookInput!): Webhook!
+  updateWebhook(id: ID!, input: UpdateWebhookInput!): Webhook!
+  deleteWebhook(id: ID!): Boolean!
+
+  createOrder(dealId: ID!, input: CreateOrderInput!): Order!
+  updateOrder(id: ID!, input: UpdateOrderInput!): Order!
+  deleteOrder(id: ID!): Boolean!
+
+  enrollInSequence(sequenceId: ID!, resourceType: String!, resourceId: ID!): SequenceSubscription!
+  unenrollFromSequence(subscriptionId: ID!): Boolean!
+
+  createAssociation(input: CreateAssociationInput!): Association!
+  deleteAssociation(id: ID!): Boolean!
+}
+
+# -------------------------------------------------------------------
+# Input Types
+# -------------------------------------------------------------------
+
+input AddressInput {
+  line1: String
+  line2: String
+  city: String
+  postalCode: String
+  state: String
+  country: String
+}
+
+input CreateContactInput {
+  firstName: String
+  lastName: String!
+  contactType: ContactType
+  title: String
+  email: String
+  phone: String
+  mobile: String
+  website: String
+  address: AddressInput
+  ownerId: ID
+  organizationId: ID
+  tags: [String!]
+}
+
+input UpdateContactInput {
+  firstName: String
+  lastName: String
+  title: String
+  email: String
+  phone: String
+  mobile: String
+  website: String
+  address: AddressInput
+  ownerId: ID
+  organizationId: ID
+  tags: [String!]
+}
+
+input CreateDealInput {
+  name: String!
+  value: Float
+  currency: String
+  contactId: ID
+  stageId: ID!
+  pipelineId: ID!
+  ownerId: ID
+  sourceId: ID
+  closeDate: DateTime
+  tags: [String!]
+}
+
+input UpdateDealInput {
+  name: String
+  value: Float
+  status: DealStatus
+  stageId: ID
+  ownerId: ID
+  closeDate: DateTime
+  lostReasonId: ID
+  tags: [String!]
+}
+
+input CreateLeadInput {
+  firstName: String
+  lastName: String!
+  company: String
+  email: String
+  phone: String
+  title: String
+  ownerId: ID
+  sourceId: ID
+  tags: [String!]
+}
+
+input UpdateLeadInput {
+  firstName: String
+  lastName: String
+  company: String
+  email: String
+  phone: String
+  title: String
+  status: LeadStatus
+  ownerId: ID
+  tags: [String!]
+}
+
+input CreateOrganizationInput {
+  name: String!
+  industry: String
+  website: String
+  phone: String
+  email: String
+  address: AddressInput
+  ownerId: ID
+  tags: [String!]
+}
+
+input UpdateOrganizationInput {
+  name: String
+  industry: String
+  website: String
+  phone: String
+  email: String
+  address: AddressInput
+  ownerId: ID
+  tags: [String!]
+}
+
+input CreateTaskInput {
+  content: String!
+  dueDate: DateTime
+  resourceType: TaskResourceType
+  resourceId: ID
+  ownerId: ID
+  remind: Boolean
+  remindAt: DateTime
+}
+
+input UpdateTaskInput {
+  content: String
+  dueDate: DateTime
+  status: TaskStatus
+  completed: Boolean
+  remind: Boolean
+  remindAt: DateTime
+}
+
+input CreateNoteInput {
+  content: String!
+  resourceType: AssociationResourceType
+  resourceId: ID
+}
+
+input UpdateNoteInput {
+  content: String
+}
+
+input CreateCallInput {
+  duration: Int
+  outcome: CallOutcome
+  direction: CallDirection
+  summary: String
+  phoneNumber: String
+  calledAt: DateTime
+  resourceType: AssociationResourceType
+  resourceId: ID
+}
+
+input UpdateCallInput {
+  duration: Int
+  outcome: CallOutcome
+  summary: String
+  calledAt: DateTime
+}
+
+input CreateWebhookInput {
+  url: String!
+  event: String!
+  resourceType: String
+  secret: String
+}
+
+input UpdateWebhookInput {
+  url: String
+  active: Boolean
+  secret: String
+}
+
+input CreateOrderInput {
+  currency: String
+  discount: Float
+  discountType: String
+  lineItems: [LineItemInput!]
+}
+
+input UpdateOrderInput {
+  currency: String
+  discount: Float
+  discountType: String
+  lineItems: [LineItemInput!]
+}
+
+input LineItemInput {
+  productId: ID
+  name: String
+  price: Float
+  quantity: Float
+  discount: Float
+  discountType: String
+}
+
+input CreateAssociationInput {
+  resourceType: AssociationResourceType!
+  resourceId: ID!
+  associatedType: AssociationResourceType!
+  associatedId: ID!
+}
+
+# -------------------------------------------------------------------
+# Result Types
+# -------------------------------------------------------------------
+
+type LeadConversionResult {
+  lead: Lead!
+  contact: Contact
+  deal: Deal
+}
