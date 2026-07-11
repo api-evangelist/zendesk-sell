@@ -48,6 +48,10 @@ apis:
   - url: graphql/zendesk-sell-graphql.md
     type: GraphQL
 common:
+- type: Authentication
+  url: authentication/zendesk-sell-authentication.yml
+- type: OAuthScopes
+  url: scopes/zendesk-sell-scopes.yml
 - type: Website
   url: https://www.zendesk.com/sell/
 - type: Documentation
