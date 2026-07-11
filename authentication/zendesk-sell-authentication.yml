@@ -1,0 +1,19 @@
+generated: '2026-07-11'
+method: derived
+source: openapi/zendesk-sell-openapi.yml
+summary:
+  types:
+  - oauth2
+  oauth2_flows:
+  - authorizationCode
+schemes:
+- name: oauth2
+  type: oauth2
+  flows:
+  - flow: authorizationCode
+    authorizationUrl: https://api.getbase.com/oauth2/authorize
+    tokenUrl: https://api.getbase.com/oauth2/token
+    scopes: 2
+  description: OAuth 2.0 (authorization code, implicit, password, and refresh token grants).
+  sources:
+  - openapi/zendesk-sell-openapi.yml
