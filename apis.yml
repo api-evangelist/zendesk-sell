@@ -48,6 +48,8 @@ apis:
   - url: graphql/zendesk-sell-graphql.md
     type: GraphQL
 common:
+- type: AgenticAccess
+  url: agentic-access/zendesk-sell-agentic-access.yml
 - type: VulnerabilityDisclosure
   url: security/zendesk-sell-vulnerability-disclosure.yml
 - type: DomainSecurity
