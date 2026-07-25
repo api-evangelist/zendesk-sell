@@ -1,0 +1,155 @@
+openapi: 3.1.0
+info:
+  title: Zendesk Sell (Sales CRM) Contacts Deals API
+  description: 'The Zendesk Sell Sales CRM API (formerly Base CRM) is a RESTful API hosted
+
+    at api.getbase.com that provides programmatic CRUD access to Sell records
+
+    including leads, contacts, deals, and other sales-pipeline resources. The
+
+    Sell platform also offers Sync, Firehose, and Search APIs alongside the
+
+    Core API documented here. Authentication uses OAuth 2.0.'
+  version: '2.0'
+  contact:
+    name: Zendesk Developer Portal
+    url: https://developer.zendesk.com/api-reference/sales-crm/introduction/
+servers:
+- url: https://api.getbase.com
+  description: Sell production API
+security:
+- oauth2: []
+tags:
+- name: Deals
+  description: Sales opportunities moving through pipeline stages.
+paths:
+  /v2/deals:
+    get:
+      tags:
+      - Deals
+      summary: List deals
+      operationId: listDeals
+      parameters:
+      - name: page
+        in: query
+        schema:
+          type: integer
+      - name: per_page
+        in: query
+        schema:
+          type: integer
+          maximum: 100
+      - name: sort_by
+        in: query
+        schema:
+          type: string
+      - name: ids
+        in: query
+        schema:
+          type: string
+      - name: owner_id
+        in: query
+        schema:
+          type: integer
+      - name: contact_id
+        in: query
+        schema:
+          type: integer
+      - name: stage_id
+        in: query
+        schema:
+          type: integer
+      responses:
+        '200':
+          description: List of deals
+    post:
+      tags:
+      - Deals
+      summary: Create a deal
+      operationId: createDeal
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Deal'
+      responses:
+        '200':
+          description: Deal created
+  /v2/deals/{id}:
+    parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+    get:
+      tags:
+      - Deals
+      summary: Retrieve a deal
+      operationId: getDeal
+      responses:
+        '200':
+          description: Deal
+    put:
+      tags:
+      - Deals
+      summary: Update a deal
+      operationId: updateDeal
+      responses:
+        '200':
+          description: Deal updated
+    delete:
+      tags:
+      - Deals
+      summary: Delete a deal
+      operationId: deleteDeal
+      responses:
+        '204':
+          description: Deal deleted
+  /v2/deals/upsert:
+    post:
+      tags:
+      - Deals
+      summary: Upsert a deal
+      operationId: upsertDeal
+      responses:
+        '200':
+          description: Deal upserted
+components:
+  schemas:
+    Deal:
+      type: object
+      required:
+      - name
+      - contact_id
+      properties:
+        name:
+          type: string
+        contact_id:
+          type: integer
+        value:
+          type: string
+        currency:
+          type: string
+        owner_id:
+          type: integer
+        stage_id:
+          type: integer
+        tags:
+          type: array
+          items:
+            type: string
+        custom_fields:
+          type: object
+  securitySchemes:
+    oauth2:
+      type: oauth2
+      description: OAuth 2.0 (authorization code, implicit, password, and refresh token grants).
+      flows:
+        authorizationCode:
+          authorizationUrl: https://api.getbase.com/oauth2/authorize
+          tokenUrl: https://api.getbase.com/oauth2/token
+          scopes:
+            read: Read access to Sell data
+            write: Write access to Sell data

@@ -1,0 +1,191 @@
+openapi: 3.1.0
+info:
+  title: Zendesk Sell (Sales CRM) Contacts Leads API
+  description: 'The Zendesk Sell Sales CRM API (formerly Base CRM) is a RESTful API hosted
+
+    at api.getbase.com that provides programmatic CRUD access to Sell records
+
+    including leads, contacts, deals, and other sales-pipeline resources. The
+
+    Sell platform also offers Sync, Firehose, and Search APIs alongside the
+
+    Core API documented here. Authentication uses OAuth 2.0.'
+  version: '2.0'
+  contact:
+    name: Zendesk Developer Portal
+    url: https://developer.zendesk.com/api-reference/sales-crm/introduction/
+servers:
+- url: https://api.getbase.com
+  description: Sell production API
+security:
+- oauth2: []
+tags:
+- name: Leads
+  description: Pre-qualified sales prospects.
+paths:
+  /v2/leads:
+    get:
+      tags:
+      - Leads
+      summary: List leads
+      description: Returns leads available to the authenticated user.
+      operationId: listLeads
+      parameters:
+      - name: page
+        in: query
+        schema:
+          type: integer
+      - name: per_page
+        in: query
+        schema:
+          type: integer
+          maximum: 100
+      - name: sort_by
+        in: query
+        schema:
+          type: string
+      - name: ids
+        in: query
+        schema:
+          type: string
+      - name: creator_id
+        in: query
+        schema:
+          type: integer
+      - name: owner_id
+        in: query
+        schema:
+          type: integer
+      - name: source_id
+        in: query
+        schema:
+          type: integer
+      - name: first_name
+        in: query
+        schema:
+          type: string
+      - name: last_name
+        in: query
+        schema:
+          type: string
+      - name: organization_name
+        in: query
+        schema:
+          type: string
+      - name: status
+        in: query
+        schema:
+          type: string
+      - name: email
+        in: query
+        schema:
+          type: string
+      responses:
+        '200':
+          description: List of leads
+    post:
+      tags:
+      - Leads
+      summary: Create a lead
+      operationId: createLead
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Lead'
+      responses:
+        '200':
+          description: Lead created
+  /v2/leads/{id}:
+    parameters:
+    - name: id
+      in: path
+      required: true
+      schema:
+        type: integer
+    get:
+      tags:
+      - Leads
+      summary: Retrieve a lead
+      operationId: getLead
+      responses:
+        '200':
+          description: Lead
+    put:
+      tags:
+      - Leads
+      summary: Update a lead
+      operationId: updateLead
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Lead'
+      responses:
+        '200':
+          description: Lead updated
+    delete:
+      tags:
+      - Leads
+      summary: Delete a lead
+      operationId: deleteLead
+      responses:
+        '204':
+          description: Lead deleted
+  /v2/leads/upsert:
+    post:
+      tags:
+      - Leads
+      summary: Upsert a lead
+      operationId: upsertLead
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Lead'
+      responses:
+        '200':
+          description: Lead created or updated
+components:
+  schemas:
+    Lead:
+      type: object
+      properties:
+        first_name:
+          type: string
+        last_name:
+          type: string
+        organization_name:
+          type: string
+        email:
+          type: string
+        phone:
+          type: string
+        mobile:
+          type: string
+        status:
+          type: string
+        source_id:
+          type: integer
+        owner_id:
+          type: integer
+        tags:
+          type: array
+          items:
+            type: string
+        custom_fields:
+          type: object
+  securitySchemes:
+    oauth2:
+      type: oauth2
+      description: OAuth 2.0 (authorization code, implicit, password, and refresh token grants).
+      flows:
+        authorizationCode:
+          authorizationUrl: https://api.getbase.com/oauth2/authorize
+          tokenUrl: https://api.getbase.com/oauth2/token
+          scopes:
+            read: Read access to Sell data
+            write: Write access to Sell data
