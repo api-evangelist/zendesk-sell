@@ -9,7 +9,19 @@ description: Zendesk Sell (formerly Base CRM) is a sales CRM platform that helps
   that provides full CRUD access to leads, contacts, deals, accounts, notes, tasks,
   calls, and custom fields.
 type: Index
-image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
+accessModel:
+  pricing: unknown
+  onboarding: approval
+  trial: false
+  try_now: false
+  public: false
+  label: Requires approval
+  confidence: medium
+  source:
+  - authentication
+  generated: '2026-07-22'
+  method: derived
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/icons/zendesk-sell.png
 tags:
 - CRM
 - Sales
@@ -25,10 +37,10 @@ specificationVersion: '0.19'
 apis:
 - aid: zendesk-sell:sales-crm-api
   name: Zendesk Sell (Sales CRM) API
-  description: OAuth 2.0-authenticated REST API for managing leads, contacts, deals,
-    accounts, notes, tasks, calls, sources, stages, pipelines, and custom fields in
-    Zendesk Sell. Bearer access tokens are passed in the Authorization header against
-    the api.getbase.com host.
+  description: >-
+    OAuth 2.0-authenticated REST API for managing leads, contacts, deals, accounts, notes, tasks, calls,
+    sources, stages, pipelines, and custom fields in Zendesk Sell. Bearer access tokens are passed in
+    the Authorization header against the api.getbase.com host.
   humanURL: https://developer.zendesk.com/api-reference/sales-crm/introduction/
   baseURL: https://api.getbase.com
   tags:
@@ -47,6 +59,36 @@ apis:
     url: https://developer.zendesk.com/api-reference/sales-crm/authentication/reference/
   - url: graphql/zendesk-sell-graphql.md
     type: GraphQL
+- aid: zendesk-sell:zendesk-sell-contacts-api
+  name: Zendesk Sell Contacts API
+  description: Individual people and organizations.
+  humanURL: https://developer.zendesk.com/api-reference/sales-crm/introduction/
+  baseURL: https://api.getbase.com
+  tags:
+  - Contacts
+  properties:
+  - type: OpenAPI
+    url: openapi/zendesk-sell-contacts-api-openapi.yml
+- aid: zendesk-sell:zendesk-sell-deals-api
+  name: Zendesk Sell Deals API
+  description: Sales opportunities moving through pipeline stages.
+  humanURL: https://developer.zendesk.com/api-reference/sales-crm/introduction/
+  baseURL: https://api.getbase.com
+  tags:
+  - Deals
+  properties:
+  - type: OpenAPI
+    url: openapi/zendesk-sell-deals-api-openapi.yml
+- aid: zendesk-sell:zendesk-sell-leads-api
+  name: Zendesk Sell Leads API
+  description: Pre-qualified sales prospects.
+  humanURL: https://developer.zendesk.com/api-reference/sales-crm/introduction/
+  baseURL: https://api.getbase.com
+  tags:
+  - Leads
+  properties:
+  - type: OpenAPI
+    url: openapi/zendesk-sell-leads-api-openapi.yml
 common:
 - type: AgenticAccess
   url: agentic-access/zendesk-sell-agentic-access.yml
