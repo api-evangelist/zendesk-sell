@@ -1,0 +1,18 @@
+{
+  "provider": "zendesk-sell",
+  "sources": [
+    "zendesk-sell-contacts-api-openapi.yml",
+    "zendesk-sell-deals-api-openapi.yml",
+    "zendesk-sell-leads-api-openapi.yml"
+  ],
+  "outputs": [
+    "zendesk-sell-contacts-api-openapi.yml",
+    "zendesk-sell-deals-api-openapi.yml",
+    "zendesk-sell-leads-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [],
+  "skipped": []
+}
