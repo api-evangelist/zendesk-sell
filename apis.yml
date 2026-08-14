@@ -7,7 +7,10 @@ description: Zendesk Sell (formerly Base CRM) is a sales CRM platform that helps
   organizations. The Sell API is a RESTful API authenticated via OAuth 2.0 (authorization
   code, implicit, password, and refresh token grants) at the api.getbase.com host
   that provides full CRUD access to leads, contacts, deals, accounts, notes, tasks,
-  calls, and custom fields.
+  calls, and custom fields, alongside a premium Sync API, a client-pulled Firehose
+  change stream and a Search API. Zendesk announced on 2025-09-09 that Sell is being
+  retired on 2027-08-31 and is no longer sold as a standalone plan, so the API carries
+  a hard end date.
 type: Index
 accessModel:
   pricing: unknown
@@ -32,7 +35,7 @@ tags:
 - Customer Experience
 url: https://raw.githubusercontent.com/api-evangelist/zendesk-sell/refs/heads/main/apis.yml
 created: '2026-05-11'
-modified: '2026-05-11'
+modified: '2026-08-13'
 specificationVersion: '0.19'
 apis:
 - aid: zendesk-sell:sales-crm-api
@@ -59,6 +62,12 @@ apis:
     url: https://developer.zendesk.com/api-reference/sales-crm/authentication/reference/
   - url: graphql/zendesk-sell-graphql.md
     type: GraphQL
+  - type: RateLimits
+    url: https://developer.zendesk.com/api-reference/sales-crm/rate-limits/
+  - type: Errors
+    url: https://developer.zendesk.com/api-reference/sales-crm/errors/
+  - type: PostmanCollection
+    url: collections/zendesk-sell.postman_collection.json
 - aid: zendesk-sell:zendesk-sell-contacts-api
   name: Zendesk Sell Contacts API
   description: Individual people and organizations.
@@ -69,6 +78,10 @@ apis:
   properties:
   - type: OpenAPI
     url: openapi/zendesk-sell-contacts-api-openapi.yml
+  - type: Overlay
+    url: overlays/zendesk-sell-contacts-api-overlay.yaml
+  - type: PostmanCollection
+    url: collections/zendesk-sell-contacts-api.postman_collection.json
 - aid: zendesk-sell:zendesk-sell-deals-api
   name: Zendesk Sell Deals API
   description: Sales opportunities moving through pipeline stages.
@@ -79,6 +92,10 @@ apis:
   properties:
   - type: OpenAPI
     url: openapi/zendesk-sell-deals-api-openapi.yml
+  - type: Overlay
+    url: overlays/zendesk-sell-deals-api-overlay.yaml
+  - type: PostmanCollection
+    url: collections/zendesk-sell-deals-api.postman_collection.json
 - aid: zendesk-sell:zendesk-sell-leads-api
   name: Zendesk Sell Leads API
   description: Pre-qualified sales prospects.
@@ -89,6 +106,10 @@ apis:
   properties:
   - type: OpenAPI
     url: openapi/zendesk-sell-leads-api-openapi.yml
+  - type: Overlay
+    url: overlays/zendesk-sell-leads-api-overlay.yaml
+  - type: PostmanCollection
+    url: collections/zendesk-sell-leads-api.postman_collection.json
 common:
 - type: AgenticAccess
   url: agentic-access/zendesk-sell-agentic-access.yml
@@ -107,7 +128,7 @@ common:
 - type: APIReference
   url: https://developer.zendesk.com/api-reference/
 - type: Pricing
-  url: https://www.zendesk.com/sell/pricing/
+  url: https://www.zendesk.com/pricing/
 - type: Signup
   url: https://www.zendesk.com/register/
 - type: Login
@@ -116,6 +137,65 @@ common:
   url: https://support.zendesk.com/
 - type: GitHubOrganization
   url: https://github.com/zendesk
+- type: DeveloperPortal
+  url: https://developer.zendesk.com/
+- type: GettingStarted
+  url: https://developer.zendesk.com/documentation/sales-crm/first-call/
+- type: Blog
+  url: https://www.zendesk.com/blog/
+- type: TermsOfService
+  url: https://www.zendesk.com/company/agreements-and-terms/zendesk-customer-agreement/
+- type: PrivacyPolicy
+  url: https://www.zendesk.com/company/agreements-and-terms/privacy-notice/
+- type: Packages
+  url: packages/zendesk-sell-packages.yml
+- type: SDKs
+  url: packages/zendesk-sell-packages.yml
+- type: WellKnown
+  url: well-known/zendesk-sell-well-known.yml
+- type: SecurityTxt
+  url: well-known/zendesk-sell-security.txt
+- type: MCPServer
+  url: mcp/zendesk-sell-mcp.yml
+- type: LLMsTxt
+  url: llms/zendesk-sell-llms.txt
+- type: Conformance
+  url: conformance/zendesk-sell-conformance.yml
+- type: Compliance
+  url: https://www.zendesk.com/trust-center/
+- type: TrustCenter
+  url: security/zendesk-sell-trust-center.yml
+- type: Security
+  url: https://www.zendesk.com/company/policies-and-guidelines/responsible-disclosure-policy/
+- type: ErrorCatalog
+  url: errors/zendesk-sell-problem-types.yml
+- type: Lifecycle
+  url: lifecycle/zendesk-sell-lifecycle.yml
+- type: StatusPage
+  url: https://status.zendesk.com/
+- type: Deprecation
+  url: https://support.zendesk.com/hc/en-us/articles/9591462550042-Announcing-the-retiring-of-Zendesk-Sell
+- type: Conventions
+  url: conventions/zendesk-sell-conventions.yml
+- type: ChangeLog
+  url: changelog/zendesk-sell-changelog.yml
+- type: CLI
+  url: cli/zendesk-sell-cli.yml
+- type: DataModel
+  url: data-model/zendesk-sell-data-model.yml
+- type: RateLimits
+  url: rate-limits/zendesk-sell-rate-limits.yml
+- type: Plans
+  url: plans/zendesk-sell-plans-pricing.yml
+- type: EventTypes
+  url: events/zendesk-sell-events.yml
+- type: AgentSkill
+  url: skills/_index.yml
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
+x-enrichment:
+  date: '2026-08-13'
+  status: enriched
+  artifacts_added: 23
+  pass: local-v1
