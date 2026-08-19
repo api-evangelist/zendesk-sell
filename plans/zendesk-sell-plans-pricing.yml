@@ -1,0 +1,29 @@
+generated: '2026-08-13'
+method: searched
+source: https://www.zendesk.com/sell/pricing/
+plan_count: 0
+note: >-
+  Zendesk no longer publishes plans for Zendesk Sell. https://www.zendesk.com/sell/pricing/
+  now 302s to the general https://www.zendesk.com/pricing/ page, which lists only the
+  service/support tiers (Support Team, Suite Team, Suite Professional, Suite Enterprise +
+  Copilot) and contains no Sell tier, no Sell per-seat price and no Sell API quota. This is
+  consistent with the 2025-09-09 announcement that Sell is retired on 2027-08-31 — the
+  product is no longer sold. Existing customers are billed under their prior Sell
+  subscription; those rates are not published. The one published commercial fact tied to
+  the API is that the Sell Sync API is described as a premium offering with separate
+  pricing (quoted, not listed).
+plans: []
+api_pricing:
+  model: included-with-subscription
+  metered: false
+  note: >-
+    Core API access is included with a Sell subscription and governed by the per-token rate
+    limit (36,000 requests/hour) rather than a metered price. See
+    rate-limits/zendesk-sell-rate-limits.yml.
+x-evidence:
+- url: https://www.zendesk.com/sell/pricing/
+  status: 200
+  note: Followed a redirect to https://www.zendesk.com/pricing/ — no Sell tier present.
+- url: https://developer.zendesk.com/api-reference/sales-crm/rate-limits/
+  status: 200
+  note: Page is titled "Pricing and Rate Limits"; the pricing content is the Sync API premium note.

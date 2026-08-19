@@ -1,0 +1,37 @@
+generated: '2026-08-13'
+method: searched
+source: https://developer.zendesk.com/api-reference/sales-crm/rate-limits/
+docs: https://developer.zendesk.com/api-reference/sales-crm/rate-limits/
+limit_count: 1
+limits:
+- name: Sell Core API per-token limit
+  scope: per-token
+  limit: 36000
+  window: 1h
+  equivalent: 10 requests per token per second
+  burst: null
+  status_on_exhaustion: 429
+  quote: >-
+    "up to 36,000 requests per hour" / "10 requests/token/second"; "Every request is
+    considered on a per-token basis"; on exhaustion "subsequent requests will receive the
+    429 Too Many Requests response code".
+  applies_to: https://api.getbase.com
+response_headers:
+  documented: []
+  note: >-
+    Zendesk publishes NO rate-limit response headers for the Sell API — the rate-limits page
+    documents the numeric ceiling and the 429 status but names no X-Rate-Limit-*,
+    RateLimit-* or Retry-After header. An agent therefore has no runtime signal of remaining
+    quota and must back off reactively on 429. This is a real gap, not an unchecked field.
+error_code: rate_limit_exceeded
+error_code_source: https://developer.zendesk.com/api-reference/sales-crm/errors/
+notes:
+- >-
+  The Sync API is documented as a premium offering with its own pricing and rate-limit
+  considerations that are quoted separately by Zendesk sales, not published.
+- >-
+  Requests without a User-Agent header are rejected with 400 invalid_user_agent before any
+  rate-limit accounting; see conventions/zendesk-sell-conventions.yml.
+x-evidence:
+- url: https://developer.zendesk.com/api-reference/sales-crm/rate-limits/
+  status: 200

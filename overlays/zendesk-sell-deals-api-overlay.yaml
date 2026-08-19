@@ -1,0 +1,75 @@
+overlay: 1.0.0
+info:
+  title: API Evangelist enhancements for Zendesk Sell deals api
+  version: 1.0.0
+extends: openapi/zendesk-sell-deals-api-openapi.yml
+x-generated: '2026-08-13'
+x-method: generated
+x-source: >-
+  Enhancements derived from the Zendesk Sell developer documentation (requests, errors,
+  authentication, rate-limits, retirement announcement) captured in this repo. The original
+  OpenAPI is never mutated.
+actions:
+- target: $.info
+  update:
+    x-apievangelist-enriched: '2026-08-13'
+    x-lifecycle-status: retiring
+    x-end-of-life: '2027-08-31'
+    x-end-of-life-source: https://support.zendesk.com/hc/en-us/articles/9591462550042-Announcing-the-retiring-of-Zendesk-Sell
+    x-artifacts:
+      conventions: conventions/zendesk-sell-conventions.yml
+      errors: errors/zendesk-sell-problem-types.yml
+      rate-limits: rate-limits/zendesk-sell-rate-limits.yml
+      authentication: authentication/zendesk-sell-authentication.yml
+      scopes: scopes/zendesk-sell-scopes.yml
+      data-model: data-model/zendesk-sell-data-model.yml
+      events: events/zendesk-sell-events.yml
+- target: $.info
+  update:
+    x-rate-limit:
+      scope: per-token
+      limit: 36000
+      window: 1h
+      status_on_exhaustion: 429
+      headers: []
+      source: https://developer.zendesk.com/api-reference/sales-crm/rate-limits/
+- target: $.info
+  update:
+    x-required-headers:
+    - name: User-Agent
+      required: true
+      note: Requests without a User-Agent are rejected with 400 invalid_user_agent.
+      source: https://developer.zendesk.com/api-reference/sales-crm/requests/
+- target: $.info
+  update:
+    x-error-envelope:
+      problem_json: false
+      shape: '{"errors":[{"error":{"code","message","details","resource","field"}}],"meta":{"http_status","logref"}}'
+      request_id_field: meta.logref
+      request_id_header: X-Request-Id
+      source: https://developer.zendesk.com/api-reference/sales-crm/errors/
+- target: $.info
+  update:
+    x-idempotency:
+      supported: false
+      note: >-
+        No Idempotency-Key contract is published. The upsert operations match on
+        caller-supplied business attributes; they are not replay-safe on a key.
+- target: $.paths['/v2/deals'].get
+  update:
+    x-agentic-access-ref: agentic-access/zendesk-sell-agentic-access.yml#listDeals
+- target: $.paths['/v2/deals'].post
+  update:
+    x-agentic-access-ref: agentic-access/zendesk-sell-agentic-access.yml#createDeal
+- target: $.paths['/v2/deals/{id}'].get
+  update:
+    x-agentic-access-ref: agentic-access/zendesk-sell-agentic-access.yml#getDeal
+- target: $.paths['/v2/deals/{id}'].put
+  update:
+    x-agentic-access-ref: agentic-access/zendesk-sell-agentic-access.yml#updateDeal
+- target: $.paths['/v2/deals/{id}'].delete
+  update:
+    x-agentic-access-ref: agentic-access/zendesk-sell-agentic-access.yml#deleteDeal
+- target: $.paths['/v2/deals/upsert'].post
+  update:
+    x-agentic-access-ref: agentic-access/zendesk-sell-agentic-access.yml#upsertDeal

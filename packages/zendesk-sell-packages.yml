@@ -1,0 +1,90 @@
+generated: '2026-08-13'
+method: searched
+source: >-
+  Public package registries (rubygems.org, pypi.org, packagist.org, repo1.maven.org,
+  registry.npmjs.org) plus the github.com/zendesk organization, which hosts the four
+  first-party Base CRM / Zendesk Sell API client libraries.
+note: >-
+  Every first-party Zendesk Sell SDK last shipped in 2021 — the newest release across
+  all four official libraries is basecrm (Ruby) 2.0.0 on 2021-10-27. Zendesk announced
+  on 2025-09-09 that Sell is retired on 2027-08-31, so the client-library surface is
+  frozen. The npm `basecrm` package is a third-party wrapper by an individual author,
+  not a Zendesk release. Versions and publish dates were read from each registry's
+  metadata endpoint on 2026-08-13.
+packages:
+- language: ruby
+  registry: rubygems
+  name: basecrm
+  url: https://rubygems.org/gems/basecrm
+  install: gem install basecrm
+  source_code: https://github.com/zendesk/basecrm-ruby
+  official: true
+  version: 2.0.0
+  published: '2021-10-27'
+  note: >-
+    Registry metadata lists author "Zendesk" and homepage github.com/zendesk/basecrm-ruby.
+    Latest GitHub release tag v2.0.0 (2021-10-27) matches the published gem.
+- language: python
+  registry: pypi
+  name: basecrm
+  url: https://pypi.org/project/basecrm/
+  install: pip install basecrm
+  source_code: https://github.com/zendesk/basecrm-python
+  official: true
+  version: 1.2.9
+  published: '2020-05-13'
+  note: >-
+    Registry author "Zendesk" (opensource@zendesk.com). PyPI is BEHIND the repository:
+    GitHub carries release v1.2.10 (2021-06-29) that was never published to PyPI, so an
+    installer gets 1.2.9 from 2020-05-13.
+- language: php
+  registry: packagist
+  name: basecrm/basecrm-php
+  url: https://packagist.org/packages/basecrm/basecrm-php
+  install: composer require basecrm/basecrm-php
+  source_code: https://github.com/zendesk/basecrm-php
+  official: true
+  version: v1.4.4
+  published: '2021-06-29'
+  note: Packagist repository resolves to github.com/zendesk/basecrm-php.
+- language: java
+  registry: maven
+  name: com.getbase:basecrm-java
+  url: https://central.sonatype.com/artifact/com.getbase/basecrm-java
+  install: "<dependency><groupId>com.getbase</groupId><artifactId>basecrm-java</artifactId><version>1.5.1</version></dependency>"
+  source_code: https://github.com/zendesk/basecrm-java
+  official: true
+  version: 1.5.1
+  published: '2021-04-19'
+  note: >-
+    Read from repo1.maven.org/maven2/com/getbase/basecrm-java/maven-metadata.xml
+    (latest 1.5.1, lastUpdated 20210419). GitHub has a later tag v1.5.2 (2021-06-29)
+    that was never released to Maven Central.
+- language: javascript
+  registry: npm
+  name: basecrm
+  url: https://www.npmjs.com/package/basecrm
+  install: npm install basecrm
+  source_code: https://github.com/yurypaleev/BaseCRM
+  official: false
+  version: 0.1.3
+  published: '2017-05-12'
+  note: >-
+    Third-party. Registry author is an individual (Yury Paleev) and the repository is a
+    personal fork, not github.com/zendesk. Zendesk publishes no official Node client for
+    the Sell API.
+- language: javascript
+  registry: npm
+  name: "@zendesk/zcli"
+  url: https://www.npmjs.com/package/@zendesk/zcli
+  install: npm install @zendesk/zcli -g
+  source_code: https://github.com/zendesk/zcli
+  official: true
+  version: 1.1.4
+  published: '2026-07-20'
+  note: >-
+    Zendesk's platform CLI for building and deploying Zendesk apps and themes — the tooling
+    used for Sell apps. It is NOT a Sell REST API client; see cli/zendesk-sell-cli.yml.
+    The only actively-maintained first-party package touching the Sell developer surface.
+official_count: 5
+sdk_count: 4

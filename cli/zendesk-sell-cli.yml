@@ -1,0 +1,42 @@
+generated: '2026-08-13'
+method: searched
+source: https://developer.zendesk.com/documentation/apps/getting-started/using-zcli/
+name: ZCLI (Zendesk CLI)
+package: "@zendesk/zcli"
+repository: https://github.com/zendesk/zcli
+version: 1.1.4
+published: '2026-07-20'
+official: true
+scope: >-
+  ZCLI is Zendesk's platform CLI for building, validating and deploying Zendesk APPS and
+  THEMES — including Sell apps, which the Sell developer docs cover ("Building your first
+  Sell app"). It is NOT a Sell REST API client: there is no `zcli leads`/`zcli deals`
+  command and no CLI wrapper for api.getbase.com. Zendesk ships no CLI for the Sell Core,
+  Sync, Firehose or Search APIs.
+successor_to: ZAT (Zendesk App Tools)
+install:
+- method: npm
+  command: npm install @zendesk/zcli -g
+  requires: Node.js v20.17.0 or higher
+verify: zcli help
+commands:
+- group: zcli apps
+  description: Manage the Zendesk apps workflow (create, package, update, validate, server).
+  authenticated: true
+- group: zcli themes
+  description: Manage the Zendesk themes workflow.
+- group: zcli profiles
+  description: Manage CLI user profiles.
+- group: zcli login
+  description: Create and/or save an authentication token for a given Zendesk subdomain.
+authentication:
+  note: >-
+    apps:create, apps:package, apps:update and apps:validate require authentication against
+    a Zendesk subdomain; this is Zendesk account auth, distinct from the Sell OAuth 2.0
+    tokens used against api.getbase.com.
+x-evidence:
+- url: https://registry.npmjs.org/@zendesk/zcli
+  status: 200
+  finding: latest 1.1.4 published 2026-07-20
+- url: https://github.com/zendesk/zcli
+  status: 200

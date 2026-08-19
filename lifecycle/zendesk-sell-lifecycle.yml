@@ -1,0 +1,73 @@
+generated: '2026-08-13'
+method: searched
+source: >-
+  https://support.zendesk.com/hc/en-us/articles/9591462550042-Announcing-the-retiring-of-Zendesk-Sell
+  and https://developer.zendesk.com/api-reference/sales-crm/introduction/
+headline: >-
+  Zendesk Sell is a retiring product. Zendesk announced on 2025-09-09 that Sell will be
+  retired on 2027-08-31, after which Zendesk no longer offers a sales CRM. Any integration
+  built against api.getbase.com has a hard end date.
+product_status: retiring
+end_of_life:
+  date: '2027-08-31'
+  announced: '2025-09-09'
+  announcement_url: https://support.zendesk.com/hc/en-us/articles/9591462550042-Announcing-the-retiring-of-Zendesk-Sell
+  scope: whole product, including the Sell (Sales CRM) API at api.getbase.com
+  data_deletion: >-
+    "All Zendesk Sell data will be deleted per the Zendesk Service Data Deletion Policy,
+    either when the Sell subscription ends or starting on August 31, 2027, whichever comes
+    first." CSV export is available via Settings > Data > Export with a 30-day download window.
+  migration_partner:
+    name: Pipedrive
+    note: >-
+      Zendesk states it "has partnered with Pipedrive, a market-leading sales CRM solution
+      with a well-established Zendesk integration" and that Pipedrive built migration tooling.
+  api_statement: >-
+    The retirement announcement does not separately address the Sell API. No Sunset date is
+    published for api.getbase.com beyond the product retirement date itself.
+versioning:
+  scheme: uri-path
+  current: v2
+  additional:
+  - version: v2
+    surface: Core API and Sync API (https://api.getbase.com/v2/...)
+  - version: v3
+    surface: Firehose event streams (https://api.getbase.com/v3/:resource/stream)
+  docs: https://developer.zendesk.com/api-reference/sales-crm/requests/
+  note: >-
+    The version is the first path segment — https://api.getbase.com/{api-version}/{resource}.
+    No header or date-based version negotiation is documented.
+deprecation:
+  policy_url: null
+  sunset_header: false
+  deprecation_header: false
+  note: >-
+    Zendesk publishes no machine-readable deprecation policy for the Sell API — no RFC 8594
+    Sunset/Deprecation header support is documented, and probes for a Sell deprecations page
+    404 (developer.zendesk.com/api-reference/sales-crm/deprecations/ -> 404). The one
+    concrete deprecation signal is the product retirement notice above, plus a documented
+    breaking change in the Core API introduction warning that "decimal values will be sent
+    as strings in JSON format, which will cause type incompatibility" for integrations that
+    do not account for it.
+  breaking_changes:
+  - change: Deal decimal values serialized as JSON strings
+    source: https://developer.zendesk.com/api-reference/sales-crm/introduction/
+sla:
+  url: null
+  uptime_target: null
+  note: No Sell-specific SLA or uptime target is published on the developer portal.
+status_page:
+  url: https://status.zendesk.com/
+  scope: Zendesk-wide status page; Sell is covered as a Zendesk product component.
+  status: 200
+deprecated_operations: []
+x-evidence:
+- url: https://support.zendesk.com/hc/en-us/articles/9591462550042-Announcing-the-retiring-of-Zendesk-Sell
+  status: 200
+- url: https://www.zendesk.com/sell/pricing/
+  status: 200
+  note: Redirects to https://www.zendesk.com/pricing/ — Sell is no longer sold as its own plan.
+- url: https://developer.zendesk.com/api-reference/sales-crm/deprecations/
+  status: 404
+- url: https://status.zendesk.com/
+  status: 200

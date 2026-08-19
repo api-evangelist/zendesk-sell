@@ -1,11 +1,17 @@
-generated: '2026-07-11'
-method: derived
-source: openapi/zendesk-sell-openapi.yml
+generated: '2026-08-13'
+method: searched
+source: openapi/_original/zendesk-sell-openapi.yml
+docs: https://developer.zendesk.com/api-reference/sales-crm/authentication/introduction/
+reference: https://developer.zendesk.com/api-reference/sales-crm/authentication/reference/
 summary:
   types:
   - oauth2
   oauth2_flows:
   - authorizationCode
+  - implicit
+  - password
+  - refreshToken
+  bearer_header: 'Authorization: Bearer <access_token>'
 schemes:
 - name: oauth2
   type: oauth2
@@ -13,7 +19,57 @@ schemes:
   - flow: authorizationCode
     authorizationUrl: https://api.getbase.com/oauth2/authorize
     tokenUrl: https://api.getbase.com/oauth2/token
-    scopes: 2
-  description: OAuth 2.0 (authorization code, implicit, password, and refresh token grants).
+    scopes: 3
+  - flow: implicit
+    authorizationUrl: https://api.getbase.com/oauth2/authorize
+    scopes: 3
+  - flow: password
+    tokenUrl: https://api.getbase.com/oauth2/token
+    scopes: 3
+  - flow: refreshToken
+    tokenUrl: https://api.getbase.com/oauth2/token
+  description: >-
+    OAuth 2.0 with four documented grants — authorization code (web apps), implicit
+    (user-agent/desktop/mobile), resource owner password credentials, and refresh token.
   sources:
-  - openapi/zendesk-sell-openapi.yml
+  - openapi/_original/zendesk-sell-openapi.yml
+  - https://developer.zendesk.com/api-reference/sales-crm/authentication/introduction/
+endpoints:
+- path: /oauth2/authorize
+  purpose: Authorization endpoint
+- path: /oauth2/token
+  purpose: Token endpoint (also used by the refresh-token grant)
+- path: /oauth2/revoke
+  purpose: Token revocation
+- path: /oauth2/token/info
+  purpose: Token introspection / validation
+token_model:
+  single_user:
+    mechanism: dashboard-generated personal access token
+    lifetime: unlimited
+    note: >-
+      Sell administrators can mint access tokens from the Sell dashboard that never expire —
+      these behave like API keys and are the documented path for single-user integrations.
+  multi_user:
+    mechanism: OAuth 2.0 authorization on behalf of the resource owner
+    access_token_lifetime: 1 hour
+    refresh_token_lifetime: no expiration
+    note: >-
+      The preferred integration model; access tokens obtained from the token endpoint expire
+      after one hour and are renewed with the refresh token.
+oidc: false
+mtls: false
+notes:
+- >-
+  api.getbase.com serves no /.well-known/oauth-authorization-server and no
+  /.well-known/openid-configuration (both 404 on 2026-08-13), so the OAuth metadata must be
+  read from the human docs — there is no RFC 8414 discovery document.
+- >-
+  The same Zendesk access token is reusable across Zendesk APIs for the Sync API.
+x-evidence:
+- url: https://developer.zendesk.com/api-reference/sales-crm/authentication/introduction/
+  status: 200
+- url: https://developer.zendesk.com/api-reference/sales-crm/authentication/reference/
+  status: 200
+- url: https://api.getbase.com/.well-known/oauth-authorization-server
+  status: 404

@@ -1,0 +1,110 @@
+generated: '2026-08-13'
+method: derived
+source: >-
+  openapi/zendesk-sell-leads-api-openapi.yml, openapi/zendesk-sell-contacts-api-openapi.yml,
+  openapi/zendesk-sell-deals-api-openapi.yml (schema properties and id-reference fields),
+  enriched from https://developer.zendesk.com/api-reference/sales-crm/resources/introduction/
+note: >-
+  Derived from the three OpenAPI definitions held in this repo. Those specs cover the Lead,
+  Contact and Deal core only — the wider Sell object graph (notes, tasks, calls, appointments,
+  line items, orders, products, sources, stages, pipelines, users, visits, documents, tags)
+  is documented by Zendesk and observable on the Firehose stream but has no machine-readable
+  schema in this repo, so those entities are recorded as `spec: false` rather than invented.
+id_style: integer
+entities:
+- name: Lead
+  spec: true
+  source: openapi/zendesk-sell-leads-api-openapi.yml
+  collection: /v2/leads
+  fields: [first_name, last_name, organization_name, email, phone, mobile, status, source_id,
+    owner_id, tags, custom_fields]
+  description: A pre-qualified sales prospect, converted into a Contact (and usually a Deal).
+- name: Contact
+  spec: true
+  source: openapi/zendesk-sell-contacts-api-openapi.yml
+  collection: /v2/contacts
+  fields: [name, first_name, last_name, email, phone, mobile, customer_status, prospect_status,
+    is_organization, owner_id, tags, custom_fields]
+  description: >-
+    A person OR an organization — the `is_organization` boolean discriminates. An
+    organization contact is the parent of person contacts.
+- name: Deal
+  spec: true
+  source: openapi/zendesk-sell-deals-api-openapi.yml
+  collection: /v2/deals
+  fields: [name, contact_id, value, currency, owner_id, stage_id, tags, custom_fields]
+  description: A sales opportunity attached to a contact and positioned in a pipeline stage.
+- name: Source
+  spec: false
+  referenced_by: Lead.source_id
+  description: Lead/deal source of origin. Documented resource, no spec in this repo.
+- name: Stage
+  spec: false
+  referenced_by: Deal.stage_id
+  description: A stage in a sales pipeline. Documented resource, no spec in this repo.
+- name: User
+  spec: false
+  referenced_by: [Lead.owner_id, Contact.owner_id, Deal.owner_id]
+  description: A Sell user; the record owner. Documented resource, no spec in this repo.
+relationships:
+- from: Deal
+  to: Contact
+  kind: belongs_to
+  via: contact_id
+  confidence: high
+  evidence: Deal schema declares contact_id.
+- from: Contact
+  to: Deal
+  kind: has_many
+  via: contact_id
+  confidence: high
+  evidence: Inverse of Deal.contact_id.
+- from: Deal
+  to: Stage
+  kind: belongs_to
+  via: stage_id
+  confidence: high
+  evidence: Deal schema declares stage_id.
+- from: Deal
+  to: User
+  kind: belongs_to
+  via: owner_id
+  confidence: high
+  evidence: Deal schema declares owner_id.
+- from: Contact
+  to: User
+  kind: belongs_to
+  via: owner_id
+  confidence: high
+  evidence: Contact schema declares owner_id.
+- from: Lead
+  to: User
+  kind: belongs_to
+  via: owner_id
+  confidence: high
+  evidence: Lead schema declares owner_id.
+- from: Lead
+  to: Source
+  kind: belongs_to
+  via: source_id
+  confidence: high
+  evidence: Lead schema declares source_id.
+- from: Contact
+  to: Contact
+  kind: belongs_to
+  via: is_organization discriminator
+  confidence: medium
+  evidence: >-
+    Sell models organizations as contacts with is_organization=true; person contacts are
+    associated with an organization contact. The linking field is not present in the specs
+    held here, so the relationship is recorded at medium confidence.
+extensibility:
+  custom_fields:
+    on: [Lead, Contact, Deal]
+    filterable: only when the field is marked Filterable in the Sell admin UI
+    query_syntax: "?custom_fields[sku]=SKU1"
+    sort_syntax: "sort_by=custom_fields:fieldname:desc"
+  tags:
+    on: [Lead, Contact, Deal]
+entity_count: 6
+relationship_count: 8

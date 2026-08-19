@@ -1,0 +1,93 @@
+generated: '2026-08-13'
+method: searched
+source: https://developer.zendesk.com/api-reference/sales-crm/firehose/overview
+spec_type: none
+spec_note: >-
+  Zendesk publishes NO AsyncAPI document for Zendesk Sell — /asyncapi.yaml and the docs host
+  return 404, and nothing in the github.com/zendesk organization carries an event spec for
+  Sell. This file is a harvested catalog of the real event surface, not a generated spec.
+surface: pull-stream
+surface_note: >-
+  IMPORTANT: the Sell event surface is NOT webhooks. Zendesk pushes nothing. The Firehose API
+  is client-pulled — "The client needs to iteratively call the endpoint in order to drain the
+  event queue." No `Webhooks` pointer is emitted for this provider because no webhook
+  delivery exists to advertise.
+event_surfaces:
+- name: Firehose API
+  kind: polled event stream
+  version: v3
+  docs: https://developer.zendesk.com/api-reference/sales-crm/firehose/overview
+  endpoint_pattern: https://api.getbase.com/v3/:resource/stream
+  example_endpoint: https://api.getbase.com/v3/deals/stream
+  authentication: OAuth 2.0 bearer token in the Authorization header
+  parameters:
+  - name: position
+    required: true
+    values: top | tail | opaque position string
+  - name: limit
+    required: false
+    values: 1-100
+    default: 25
+  retention: Full event history for the last 72 hours.
+  ordering: >-
+    A monotonic `sequence` number per resource id lets a consumer detect which of two events
+    is newer. Global ordering across resources is not guaranteed.
+  envelope:
+    items: array of events
+    event_fields:
+      data: Current snapshot of the resource.
+      meta.event_id: Unique event identifier.
+      meta.event_type: created | updated | deleted
+      meta.event_cause: interaction | system | embedded_object_event
+      meta.event_time: Event timestamp.
+      meta.type: Resource type.
+      meta.sequence: Monotonic per-id sequence number.
+      meta.previous: Prior resource state (updates only).
+  resource_count: 22
+  resources:
+  - appointments
+  - calls
+  - collaborations
+  - contacts
+  - deals
+  - documents
+  - leads
+  - line_items
+  - notes
+  - orders
+  - products
+  - sources
+  - stages
+  - tags
+  - tasks
+  - users
+  - visits
+  resources_note: >-
+    Zendesk documents 22 Firehose resource endpoints; the list above records those named on
+    the overview page. Consult the docs for the complete enumeration rather than assuming.
+  guarantees_docs: https://developer.zendesk.com/documentation/sales-crm/firehose/guarantees-best-practices/
+  faq_docs: https://developer.zendesk.com/documentation/sales-crm/firehose/faq/
+  code_samples: https://developer.zendesk.com/documentation/sales-crm/firehose/code-samples/
+- name: Sync API
+  kind: stateful pull synchronization protocol
+  version: v2
+  docs: https://developer.zendesk.com/api-reference/sales-crm/sync/introduction
+  endpoint: https://api.getbase.com/v2/sync
+  authentication: OAuth 2.0 bearer token (the same token works across Zendesk APIs)
+  consistency: >-
+    "Availability over consistency" with eventual-consistency guarantees — ordering is not
+    guaranteed, delivery is, and the protocol is designed to prevent data loss.
+  commercial: Documented as a premium offering with separate pricing and rate limits.
+webhooks:
+  supported: false
+  note: >-
+    No outbound webhook registration API and no webhook event catalog is published for
+    Zendesk Sell. (Zendesk Support has webhooks; that is a different product and a different
+    repo.) Consumers of Sell changes must poll Firehose or Sync.
+x-evidence:
+- url: https://developer.zendesk.com/api-reference/sales-crm/firehose/overview
+  status: 200
+- url: https://developer.zendesk.com/api-reference/sales-crm/sync/introduction
+  status: 200
+- url: https://developer.zendesk.com/api-reference/sales-crm/firehose/introduction/
+  status: 404

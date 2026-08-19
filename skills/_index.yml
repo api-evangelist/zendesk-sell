@@ -1,0 +1,20 @@
+generated: '2026-08-13'
+method: generated
+source: >-
+  Generated from the OpenAPI definitions in openapi/ (every operationId below is verified
+  present in the referenced spec) plus the harvested conventions/, errors/, rate-limits/,
+  events/ and lifecycle/ artifacts. Zendesk publishes no AGENTS.md or agent skills for Sell.
+skills:
+- file: zendesk-sell-capture-and-qualify-lead.md
+  name: Capture and qualify a Zendesk Sell lead
+  api: openapi/zendesk-sell-leads-api-openapi.yml
+  operations: [listLeads, createLead, upsertLead, getLead, upsertContact, createDeal]
+- file: zendesk-sell-manage-deal-pipeline.md
+  name: Move a Zendesk Sell deal through the pipeline
+  api: openapi/zendesk-sell-deals-api-openapi.yml
+  operations: [listDeals, getDeal, createDeal, updateDeal, upsertDeal, deleteDeal, getContact]
+- file: zendesk-sell-mirror-crm-changes.md
+  name: Mirror Zendesk Sell records into a local store
+  api: openapi/zendesk-sell-contacts-api-openapi.yml
+  operations: [listLeads, listContacts, listDeals, getLead, getContact, getDeal]
+skill_count: 3

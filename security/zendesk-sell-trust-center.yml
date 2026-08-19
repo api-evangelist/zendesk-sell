@@ -1,0 +1,35 @@
+generated: '2026-08-13'
+method: searched
+probe: true
+url: https://www.zendesk.com/trust-center/
+scope: >-
+  Zendesk-wide trust center. Zendesk Sell is covered as a Zendesk product; the certifications
+  are held by Zendesk, Inc., not scoped to Sell alone.
+certifications:
+- SOC 2 Type II
+- ISO 27001
+- ISO 27018
+- ISO 27701
+- CSA STAR
+- FedRAMP
+- HIPAA
+- GDPR
+- C5
+related:
+- name: Responsible disclosure policy
+  url: https://www.zendesk.com/company/policies-and-guidelines/responsible-disclosure-policy/
+- name: Bug bounty (Bugcrowd)
+  url: https://bugcrowd.com/engagements/zendesk
+- name: security.txt
+  url: https://www.zendesk.com/.well-known/security.txt
+evidence:
+- source: https://www.zendesk.com/trust-center/
+  status: 200
+  keywords: [SOC 2 Type II, ISO 27001, ISO 27018, ISO 27701, CSA STAR, FedRAMP, HIPAA, GDPR, C5]
+  note: >-
+    Certification names extracted from the fetched trust-center page body on 2026-08-13.
+    www.zendesk.com returns 403 to default curl user agents; this fetch used a browser UA,
+    which is why the mechanical probe-security-programs.py pass recorded trust=none.
+x-evidence:
+- url: https://www.zendesk.com/trust-center/
+  status: 200

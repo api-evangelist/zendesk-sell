@@ -1,0 +1,65 @@
+generated: '2026-08-13'
+method: searched
+source: https://support.zendesk.com/hc/en-us/articles/11003806019738-Release-notes-through-2026-07-10
+index_url: null
+index_note: >-
+  Zendesk publishes the weekly release notes as individual help-center articles; a stable
+  section index URL was not verified (the guessed section id 404s), so only articles probed
+  at 200 are recorded below.
+scope: >-
+  Zendesk publishes NO Sell-specific or Sell-API-specific changelog. Every candidate
+  developer-portal changelog path 404s (see x-evidence). What exists is a single
+  platform-wide weekly stream on the Zendesk help center, titled "Release notes through
+  <date>", covering all Zendesk products; Sell appears in it only when a Sell change ships.
+  Recording it here is honest about scope — do not read these entries as Sell API changes.
+versioning_scheme: dated-weekly
+current_version: null
+api_changelog: false
+entries:
+- date: '2026-07-10'
+  title: Release notes through 2026-07-10
+  url: https://support.zendesk.com/hc/en-us/articles/11003806019738-Release-notes-through-2026-07-10
+  scope: platform-wide
+- date: '2026-05-22'
+  title: Release notes through 2026-05-22
+  url: https://support.zendesk.com/hc/en-us/articles/10818406072730-Release-notes-through-2026-05-22
+  scope: platform-wide
+- date: '2026-05-01'
+  title: Release notes through 2026-05-01
+  url: https://support.zendesk.com/hc/en-us/articles/10654623185690-Release-notes-through-2026-05-01
+  scope: platform-wide
+- date: '2026-04-24'
+  title: Release notes through 2026-04-24
+  url: https://support.zendesk.com/hc/en-us/articles/10608058661146-Release-notes-through-2026-04-24
+  scope: platform-wide
+- date: '2026-04-03'
+  title: Release notes through 2026-04-03
+  url: https://support.zendesk.com/hc/en-us/articles/10510545646618-Release-notes-through-2026-04-03
+  scope: platform-wide
+- date: '2026-01-23'
+  title: Release notes through 2026-01-23
+  url: https://support.zendesk.com/hc/en-us/articles/10219461560346-Release-notes-through-2026-01-23
+  scope: platform-wide
+material_change:
+  date: '2025-09-09'
+  title: Announcing the retiring of Zendesk Sell
+  url: https://support.zendesk.com/hc/en-us/articles/9591462550042-Announcing-the-retiring-of-Zendesk-Sell
+  breaking: true
+  note: >-
+    The only Sell-specific dated announcement that matters to an integrator: Sell retires
+    2027-08-31. See lifecycle/zendesk-sell-lifecycle.yml.
+breaking_changes_documented:
+- change: >-
+    Deal decimal values will be sent as strings in JSON, causing type incompatibility for
+    integrations that do not account for it.
+  source: https://developer.zendesk.com/api-reference/sales-crm/introduction/
+  date: null
+x-evidence:
+- url: https://developer.zendesk.com/api-reference/sales-crm/changelog/
+  status: 404
+- url: https://developer.zendesk.com/api-reference/introduction/changelog/
+  status: 404
+- url: https://developer.zendesk.com/documentation/developer-tools/zendesk-api-changelog/
+  status: 404
+- url: https://support.zendesk.com/hc/en-us/articles/11003806019738-Release-notes-through-2026-07-10
+  status: 200

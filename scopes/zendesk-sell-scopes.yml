@@ -1,24 +1,51 @@
-generated: '2026-07-11'
-method: derived
-source: openapi/zendesk-sell-openapi.yml
+generated: '2026-08-13'
+method: searched
+source: openapi/_original/zendesk-sell-openapi.yml
+docs: https://developer.zendesk.com/api-reference/sales-crm/authentication/introduction/
+reference: https://developer.zendesk.com/api-reference/sales-crm/authentication/reference/
 schemes:
 - name: oauth2
-  source: openapi/zendesk-sell-openapi.yml
+  source: openapi/_original/zendesk-sell-openapi.yml
   flows:
   - flow: authorizationCode
     authorizationUrl: https://api.getbase.com/oauth2/authorize
     tokenUrl: https://api.getbase.com/oauth2/token
-  description: OAuth 2.0 (authorization code, implicit, password, and refresh token grants).
+  - flow: implicit
+    authorizationUrl: https://api.getbase.com/oauth2/authorize
+  - flow: password
+    tokenUrl: https://api.getbase.com/oauth2/token
+  description: >-
+    OAuth 2.0 (authorization code, implicit, password, and refresh token grants).
+scope_count: 3
 scopes:
 - scope: read
-  description: Read access to Sell data
-  flows:
-  - authorizationCode
+  description: >-
+    "Grant read-only access to all your data, except for the account and user info."
+  flows: [authorizationCode, implicit, password]
   sources:
-  - openapi/zendesk-sell-openapi.yml
+  - https://developer.zendesk.com/api-reference/sales-crm/authentication/introduction/
+  - openapi/_original/zendesk-sell-openapi.yml
 - scope: write
-  description: Write access to Sell data
-  flows:
-  - authorizationCode
+  description: >-
+    Write access to all your data, except for the account and user info.
+  flows: [authorizationCode, implicit, password]
   sources:
-  - openapi/zendesk-sell-openapi.yml
+  - https://developer.zendesk.com/api-reference/sales-crm/authentication/introduction/
+  - openapi/_original/zendesk-sell-openapi.yml
+- scope: profile
+  description: >-
+    Read-only access to account and user information.
+  flows: [authorizationCode, implicit, password]
+  sources:
+  - https://developer.zendesk.com/api-reference/sales-crm/authentication/introduction/
+  note: >-
+    Documented by Zendesk but ABSENT from the OpenAPI in openapi/ — found by reading the
+    authentication docs, not the spec.
+granularity: coarse
+granularity_note: >-
+  Three account-wide scopes only. There is no per-resource or per-verb scoping (no
+  read:leads / write:deals), so any token that can write a note can also delete every deal.
+  `insufficient_scope` (HTTP 403) is the error returned when a token lacks the scope.
+x-evidence:
+- url: https://developer.zendesk.com/api-reference/sales-crm/authentication/introduction/
+  status: 200

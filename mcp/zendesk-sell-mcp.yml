@@ -1,0 +1,88 @@
+generated: '2026-08-13'
+method: derived
+status: candidate
+source: openapi/_original/zendesk-sell-openapi.yml
+search_result: >-
+  No first-party MCP server exists for Zendesk Sell. Zendesk's own MCP documentation
+  (support.zendesk.com article 10497779528730) describes Zendesk acting as an MCP CLIENT
+  that connects OUT to third-party MCP servers from action flows, and notes Zendesk "can
+  also act as an MCP server in other scenarios" without publishing an endpoint. That
+  capability is scoped to the Suite/Support plans; Zendesk Sell is not named. Every
+  zendesk-mcp-server package found on npm/GitHub is community-built and wraps the Zendesk
+  SUPPORT API, not the Sell API at api.getbase.com. The tools below are a DERIVED candidate
+  set from this repo's OpenAPI — nobody ships them.
+deployment:
+  mode: none
+  endpoint: null
+  install: null
+  package: null
+  auth: oauth
+  verified: derived
+  note: >-
+    mode:none — no hosted endpoint and no stdio package from Zendesk for Sell. If a server
+    were built, it would authenticate with the Sell OAuth 2.0 bearer token (read/write/profile
+    scopes) against https://api.getbase.com.
+server:
+  name: zendesk-sell
+  transport: null
+  url: null
+tools:
+- name: list_leads
+  description: List leads available to the authenticated user.
+  source_operation: openapi/zendesk-sell-leads-api-openapi.yml#listLeads
+- name: get_lead
+  description: Retrieve a single lead by id.
+  source_operation: openapi/zendesk-sell-leads-api-openapi.yml#getLead
+- name: create_lead
+  description: Create a lead.
+  source_operation: openapi/zendesk-sell-leads-api-openapi.yml#createLead
+- name: update_lead
+  description: Update a lead by id.
+  source_operation: openapi/zendesk-sell-leads-api-openapi.yml#updateLead
+- name: delete_lead
+  description: Delete a lead by id.
+  source_operation: openapi/zendesk-sell-leads-api-openapi.yml#deleteLead
+- name: upsert_lead
+  description: Create or update a lead matched on business attributes.
+  source_operation: openapi/zendesk-sell-leads-api-openapi.yml#upsertLead
+- name: list_contacts
+  description: List contacts (people and organizations).
+  source_operation: openapi/zendesk-sell-contacts-api-openapi.yml#listContacts
+- name: get_contact
+  description: Retrieve a single contact by id.
+  source_operation: openapi/zendesk-sell-contacts-api-openapi.yml#getContact
+- name: create_contact
+  description: Create a contact.
+  source_operation: openapi/zendesk-sell-contacts-api-openapi.yml#createContact
+- name: update_contact
+  description: Update a contact by id.
+  source_operation: openapi/zendesk-sell-contacts-api-openapi.yml#updateContact
+- name: delete_contact
+  description: Delete a contact by id.
+  source_operation: openapi/zendesk-sell-contacts-api-openapi.yml#deleteContact
+- name: upsert_contact
+  description: Create or update a contact matched on business attributes.
+  source_operation: openapi/zendesk-sell-contacts-api-openapi.yml#upsertContact
+- name: list_deals
+  description: List deals in the pipeline.
+  source_operation: openapi/zendesk-sell-deals-api-openapi.yml#listDeals
+- name: get_deal
+  description: Retrieve a single deal by id.
+  source_operation: openapi/zendesk-sell-deals-api-openapi.yml#getDeal
+- name: create_deal
+  description: Create a deal.
+  source_operation: openapi/zendesk-sell-deals-api-openapi.yml#createDeal
+- name: update_deal
+  description: Update a deal by id, including moving it between stages.
+  source_operation: openapi/zendesk-sell-deals-api-openapi.yml#updateDeal
+- name: delete_deal
+  description: Delete a deal by id.
+  source_operation: openapi/zendesk-sell-deals-api-openapi.yml#deleteDeal
+- name: upsert_deal
+  description: Create or update a deal matched on business attributes.
+  source_operation: openapi/zendesk-sell-deals-api-openapi.yml#upsertDeal
+tool_count: 18
+x-evidence:
+- url: https://support.zendesk.com/hc/en-us/articles/10497779528730-Connecting-to-MCP-servers-and-using-MCP-tools-in-action-flows
+  status: 200
+  finding: Zendesk as MCP client; no Zendesk-hosted MCP endpoint published, Sell not covered.

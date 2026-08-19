@@ -1,0 +1,115 @@
+generated: '2026-08-13'
+method: searched
+source: https://developer.zendesk.com/api-reference/sales-crm/errors/
+format: custom
+problem_json: false
+envelope:
+  shape: >-
+    {"errors": [{"error": {"code": ..., "message": ..., "details": ..., "resource": ...,
+    "field": ...}}], "meta": {"http_status": ..., "logref": ..., "links": {"more_info": ...}}}
+  fields:
+    errors[].error.code: The error identifier.
+    errors[].error.message: >-
+      Human-readable description, localized per the Content-Language header.
+    errors[].error.details: Optional developer-focused explanation, always English.
+    errors[].error.resource: Optional resource name (resource errors only).
+    errors[].error.field: Optional field name in JSON Pointer format (resource errors only).
+    meta.http_status: HTTP status code plus the HTTP status message.
+    meta.logref: Unique request identifier; matches the X-Request-Id response header.
+    meta.links.more_info: Optional link to documentation about the error.
+  note: >-
+    Sell does NOT use RFC 9457 application/problem+json. Errors are a Zendesk-specific
+    envelope returned as application/json, and multiple errors can be returned in one
+    response (the `errors` array).
+invalid_request_errors:
+- code: not_found
+  status: 404
+  title: Resource not found
+- code: incorrect_path
+  status: 404
+  title: Incorrect request path
+- code: unauthorized
+  status: 401
+  title: Missing, malformed, expired or invalid access token
+  remediation: >-
+    Re-authenticate; tokens minted at the token endpoint expire after one hour and must be
+    refreshed with the refresh-token grant.
+- code: insufficient_scope
+  status: 403
+  title: Token lacks the required OAuth scope
+  remediation: Request the read, write or profile scope as appropriate.
+- code: rate_limit_exceeded
+  status: 429
+  title: Rate limit exceeded
+  remediation: >-
+    Back off; the ceiling is 36,000 requests/hour per token (10 req/token/second). No
+    rate-limit headers are returned, so retry with exponential backoff.
+- code: invalid_param
+  status: 400
+  title: Invalid query or path parameter
+- code: invalid_header
+  status: 400
+  title: Invalid or missing header
+  remediation: >-
+    Includes invalid_user_agent — a request with no User-Agent header is rejected outright.
+- code: invalid_payload
+  status: 400
+  title: Payload could not be parsed
+- code: incorrect_payload
+  status: 422
+  title: Payload parsed but semantically incorrect
+- code: server_error
+  status: 500
+  title: Internal server error
+- code: temporarily_unavailable
+  status: 503
+  title: Service temporarily unavailable
+  remediation: Retry later.
+resource_errors_note: >-
+  Returned alongside `resource` + `field` (JSON Pointer) on 422 Unprocessable Entity when
+  a submitted record fails validation.
+resource_errors:
+- code: unknown
+  title: Unknown resource attribute
+- code: missing
+  title: Required attribute missing
+- code: already_exists
+  title: Value must be unique and already exists
+- code: blank
+  title: Attribute must not be blank
+- code: invalid_type
+  title: Attribute is of the wrong type
+- code: incorrect_value
+  title: Attribute value is not acceptable
+http_statuses:
+- {status: 400, meaning: Bad Request}
+- {status: 401, meaning: Unauthorized}
+- {status: 403, meaning: Forbidden}
+- {status: 404, meaning: Not Found}
+- {status: 422, meaning: Unprocessable Entity}
+- {status: 429, meaning: Too Many Requests}
+- {status: 500, meaning: Internal Server Error}
+- {status: 502, meaning: Bad Gateway}
+- {status: 503, meaning: Service Unavailable}
+- {status: 504, meaning: Gateway Timeout}
+observed:
+- url: https://api.getbase.com/v2/leads
+  status: 401
+  body: >-
+    {"errors":[{"error":{"code":"unauthorized","details":"Required access token is missing,
+    malformed, expired, or invalid.", ...
+  note: Unauthenticated live probe on 2026-08-13 confirming the documented envelope.
+- url: https://api.getbase.com/openapi.json
+  status: 404
+  body: >-
+    {"errors":[{"error":{"code":"not_found","details":"Requested path was not
+    found.","message":"Not Found"}, "meta": ...
+spec_gap: >-
+  The OpenAPI definitions in openapi/ declare only 2xx/204 responses — none of the error
+  statuses above appear in the machine-readable contract. This catalog was harvested from
+  the human docs, so an agent reading only the spec cannot see the error model.
+x-evidence:
+- url: https://developer.zendesk.com/api-reference/sales-crm/errors/
+  status: 200
+- url: https://api.getbase.com/v2/leads
+  status: 401

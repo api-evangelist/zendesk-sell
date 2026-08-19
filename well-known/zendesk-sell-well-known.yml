@@ -1,0 +1,69 @@
+generated: '2026-08-13'
+method: probed
+source: Live HTTPS probes on 2026-08-13 against the Sell API host and the Zendesk web/docs hosts.
+note: >-
+  The API host api.getbase.com answers every /.well-known/* path with its normal JSON
+  404 envelope ({"errors":[{"error":{"code":"not_found"...}}]}) — a real 404, not an SPA
+  shell. developer.zendesk.com returns a 404 HTML shell for every path. Only
+  www.zendesk.com serves a real document: a PGP-signed RFC 9116 security.txt.
+  www.zendesk.com rejects default curl user agents with 403; the 200s below were observed
+  with a browser user agent.
+hosts:
+- host: https://api.getbase.com
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+  - path: /llms.txt
+    status: 404
+- host: https://www.zendesk.com
+  documents:
+  - path: /.well-known/security.txt
+    status: 200
+    content_type: text/plain
+    file: zendesk-sell-security.txt
+    note: RFC 9116, PGP-signed, Expires 2027-04-16.
+  - path: /llms.txt
+    status: 200
+    content_type: text/plain
+    bytes: 741350
+    note: >-
+      Real 200 — a corporate zendesk.com marketing/content index covering the whole Zendesk
+      product line, not a Sell developer surface. Not saved verbatim here; see
+      llms/zendesk-sell-llms.txt for the Sell-scoped file generated from this repo.
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+- host: https://developer.zendesk.com
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+  - path: /.well-known/openid-configuration
+    status: 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+  - path: /.well-known/api-catalog
+    status: 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+  - path: /.well-known/agent-card.json
+    status: 404
+  - path: /.well-known/agent.json
+    status: 404
+  - path: /llms.txt
+    status: 404
+documents_found: 1
