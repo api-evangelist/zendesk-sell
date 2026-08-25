@@ -1,0 +1,14 @@
+{
+  "repo": "zendesk-sell",
+  "feeds": [
+    {
+      "source": "https://developer.zendesk.com/documentation/sales-crm/first-call/",
+      "feed_url": "https://developer.zendesk.com/documentation/sales-crm/first-call/",
+      "title": "",
+      "saved": 0,
+      "method": "none"
+    }
+  ],
+  "post_count": 0,
+  "fetched": "2026-08-22T20:20:02Z"
+}
