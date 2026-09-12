@@ -1,4 +1,4 @@
-openapi: 3.1.0
+openapi: 3.2.0
 info:
   title: Zendesk Sell (Sales CRM) Contacts API
   description: 'The Zendesk Sell Sales CRM API (formerly Base CRM) is a RESTful API hosted

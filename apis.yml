@@ -212,3 +212,5 @@ x-enrichment:
   status: enriched
   artifacts_added: 23
   pass: local-v1
+x-parent: zendesk
+x-relationship: product
