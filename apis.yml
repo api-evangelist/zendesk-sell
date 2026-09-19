@@ -43,6 +43,14 @@ tags:
 - Sales Automation
 - Leads
 - Deals
+- Pipelines
+- Customer Experience
+tags_raw:
+- CRM
+- Sales
+- Sales Automation
+- Leads
+- Deals
 - Pipeline
 - Customer Experience
 url: https://raw.githubusercontent.com/api-evangelist/zendesk-sell/refs/heads/main/apis.yml
@@ -59,6 +67,13 @@ apis:
   humanURL: https://developer.zendesk.com/api-reference/sales-crm/introduction/
   baseURL: https://api.getbase.com
   tags:
+  - CRM
+  - Sales
+  - Leads
+  - Contacts
+  - Deals
+  - Pipelines
+  tags_raw:
   - CRM
   - Sales
   - Leads
