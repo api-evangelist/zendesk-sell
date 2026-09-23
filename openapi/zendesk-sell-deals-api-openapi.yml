@@ -1,6 +1,6 @@
 openapi: 3.2.0
 info:
-  title: Zendesk Sell (Sales CRM) Contacts Deals API
+  title: Zendesk Sell (Sales CRM) Deals API
   description: 'The Zendesk Sell Sales CRM API (formerly Base CRM) is a RESTful API hosted
 
     at api.getbase.com that provides programmatic CRUD access to Sell records

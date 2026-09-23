@@ -1,9 +1,7 @@
 {
   "provider": "zendesk-sell",
   "sources": [
-    "zendesk-sell-contacts-api-openapi.yml",
-    "zendesk-sell-deals-api-openapi.yml",
-    "zendesk-sell-leads-api-openapi.yml"
+    "_original/zendesk-sell-openapi.yml"
   ],
   "outputs": [
     "zendesk-sell-contacts-api-openapi.yml",
@@ -14,10 +12,13 @@
   "errors": [],
   "warnings": [],
   "notes": [
-    "zendesk-sell-contacts-api-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
-    "zendesk-sell-deals-api-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
-    "zendesk-sell-leads-api-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "sourced from openapi/_original/ (1 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "zendesk-sell-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
     "apis.yml register: already-registered"
   ],
-  "skipped": []
+  "skipped": [
+    "zendesk-sell-contacts-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "zendesk-sell-deals-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "zendesk-sell-leads-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
 }

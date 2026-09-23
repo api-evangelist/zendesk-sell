@@ -1,0 +1,33 @@
+# Front Door AI Index — zendesk-sell — 2026-09-17
+# AI vocabulary counted on the provider's root page. Generated; do not edit.
+# `score` is null unless ownership is `own` — see front_door_ai.py.
+front_door_ai:
+  slug: zendesk-sell
+  lexicon_version: '1.0'
+  probed_at: '2026-09-17'
+  host: www.zendesk.com
+  final_host: www.zendesk.com
+  ownership: shared
+  owner: zendesk
+  shares_host_with:
+  - zendesk
+  inherited_from: null
+  verdict: scored
+  score: null
+  host_score: 124
+  density: null
+  words: 2747
+  tiers:
+    agentic: 30
+    core: 94
+    model: 0
+  ambiguous: 51
+  top_terms:
+    AI: 91
+    agent: 36
+    AI agent: 26
+    automation: 11
+    intelligence: 4
+    artificial intelligence: 3
+    agentic: 2
+    copilot: 2
