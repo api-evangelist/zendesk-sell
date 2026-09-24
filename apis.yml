@@ -87,8 +87,6 @@ apis:
     url: https://developer.zendesk.com/api-reference/sales-crm/authentication/introduction/
   - type: OAuth Reference
     url: https://developer.zendesk.com/api-reference/sales-crm/authentication/reference/
-  - url: graphql/zendesk-sell-graphql.md
-    type: GraphQL
   - type: RateLimits
     url: https://developer.zendesk.com/api-reference/sales-crm/rate-limits/
   - type: Errors
