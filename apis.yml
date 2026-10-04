@@ -136,6 +136,9 @@ apis:
   - type: PostmanCollection
     url: collections/zendesk-sell-leads-api.postman_collection.json
 common:
+- type: CapabilityMap
+  url: capabilities/zendesk-sell-capability-edges.yml
+  name: Zendesk Sell Business Capability Map
 - type: AgenticAccess
   url: agentic-access/zendesk-sell-agentic-access.yml
 - type: VulnerabilityDisclosure

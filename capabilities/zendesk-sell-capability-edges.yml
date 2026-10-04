@@ -1,0 +1,45 @@
+slug: zendesk-sell
+provider: Zendesk Sell
+generated_by: planning/capability-mapping/scripts/classify_capabilities.py
+model: claude-opus-5
+frame:
+- Software & Technology
+min_confidence: 0.7
+capability_model:
+  source: https://github.com/vincentmakes/turbo-ea-capabilities
+  license: CC-BY-4.0
+  attribution: Turbo EA Capabilities by Vincent Verdet — Turbo EA, https://github.com/vincentmakes/turbo-ea-capabilities,
+    CC BY 4.0
+  notice: NOTICE
+edge_count: 3
+edges:
+- tag: Deals
+  spec_file: zendesk-sell-deals-api-openapi.yml
+  capability_id: BC-410.30
+  capability_id_l1: BC-410
+  capability_name: Opportunity & Pipeline Management
+  confidence: 0.9
+  evidence: 'POST /v2/deals createDeal ''Create a deal''; vendor: ''helps sales teams manage leads, contacts,
+    deals, and pipelines'''
+  reason: Deal records in a sales CRM are the opportunity/deal lifecycle object; CRUD over them realises
+    opportunity and pipeline management.
+- tag: Leads
+  spec_file: zendesk-sell-leads-api-openapi.yml
+  capability_id: BC-410.30
+  capability_id_l1: BC-410
+  capability_name: Opportunity & Pipeline Management
+  confidence: 0.88
+  evidence: GET /v2/leads listLeads, POST /v2/leads createLead 'Create a lead'; 'sales CRM platform that
+    helps sales teams manage leads, contacts, deals, and pipelines'
+  reason: Lead record management in a sales CRM is the front end of the lead-to-opportunity lifecycle,
+    squarely Opportunity & Pipeline Management.
+- tag: Contacts
+  spec_file: zendesk-sell-contacts-api-openapi.yml
+  capability_id: BC-420.10
+  capability_id_l1: BC-420
+  capability_name: Customer Data Management
+  confidence: 0.85
+  evidence: GET/POST/PUT/DELETE /v2/contacts, POST /v2/contacts/upsert 'Upsert a contact'; 'programmatic
+    CRUD access to Sell records including leads, contacts, deals'
+  reason: Full CRUD plus upsert over CRM contact master records in a sales CRM is customer data management
+    (customer master / record maintenance).
