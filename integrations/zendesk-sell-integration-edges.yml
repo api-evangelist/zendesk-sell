@@ -1,0 +1,31 @@
+generated: '2026-10-12'
+method: searched
+source:
+- https://zapier.com/apps/zendesk-sell/integrations
+- https://n8n.io/integrations/zendesk-sell/
+- https://composio.dev/toolkits/zendesk-sell
+- https://monid.ai/tools/zendesk-sell
+checked:
+- https://composio.dev/toolkits/zendesk-sell
+- https://monid.ai/tools/zendesk-sell
+- https://n8n.io/integrations/zendesk-sell/
+- https://zapier.com/apps/zendesk-sell/integrations
+summary: null
+marketplace_apps: []
+edges:
+- partner_name: supaglue
+  partner: supaglue
+  partner_match: domain
+  type: contract
+  channel: partner-built
+  relationship: processor-connection
+  direction: partner-built
+  evidence: https://github.com/api-evangelist/supaglue/blob/main/openapi/supaglue-syncconfigs-api-openapi.yml
+  contract_reference:
+    repo: supaglue
+    spec_file: supaglue-syncconfigs-api-openapi.yml
+    value: zendesk_sell
+    property: components.schemas.provider_name
+    detected_by: detect-payment-method-edges.py
+    detected: '2026-10-12'
+templates: []
